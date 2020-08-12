@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en" class="app" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="title">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>修改用户信息</title>
+    <meta name="keywords" content="mtons, mtons,博客,社区,摄影,旅游,艺术,娱乐">
+    <meta name="description" content="Mtons, 轻松分享你的兴趣. 便捷的文字、图片发布,扁平化的响应式设计,美观、大气,是您记录生活的最佳选择">
+
+    <meta property="mtons:mblog" content="2.2.1">
+
+    <script th:src="@{/lib/pace/pace.min.js}"></script>
+    <link th:href="@{/lib/pace/themes/pace-theme-minimal.css}" rel="stylesheet" />
+
+    <link rel='stylesheet' th:href="@{/lib/font-awesome/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/animate/animate.min.css}">
+    <link rel='stylesheet' th:href='@{/css/style.css}'/>
+    <link rel='stylesheet' th:href='@{/css/layout.css}'/>
+    <link rel='stylesheet' th:href='@{/css/plugins.css}'/>
+    <link rel='stylesheet' th:href='@{/css/addons.css|}'/>
+
+    <link rel='stylesheet' th:href="@{/lib/baguette/baguetteBox.min.css}"/>
+
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sea.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sea.config.js}"></script>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon-precomposed" href="http://mtons.com/dist/images/logo.png"/>
+    <link rel="shortcut icon" href="http://mtons.com/dist/images/logo.png"/>
+
+    <script type="text/javascript">
+        var _base_path = '$!{base}';
+
+        window.app = {
+            base: '',
+            LOGIN_TOKEN: '$!{profile.id}'
+        };
+
+        window.UEDITOR_HOME_URL = '/assets/vendors/ueditor/';
+    </script>
+</head>
+<body>
+
+</body>
+</html>

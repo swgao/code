@@ -32,6 +32,10 @@
                     </div>
                 </form>
             </div>
+            <div class="right m-item item m-mobile-hide" th:if="${session.user} == null">
+                <a href="#"  class=" item m-mobile-hide">登录</a>
+                <a href="#" th:href="@{/re}" class=" item m-mobile-hide">注册</a>
+            </div>
         </div>
     </div>
     <!--响应手机端的三个横杠-->

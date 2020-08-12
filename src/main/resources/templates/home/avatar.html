@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>修改用户信息</title>
+    <meta name="keywords" content="mtons, mtons,博客,社区,摄影,旅游,艺术,娱乐">
+    <meta name="description" content="Mtons, 轻松分享你的兴趣. 便捷的文字、图片发布,扁平化的响应式设计,美观、大气,是您记录生活的最佳选择">
+
+<meta property="mtons:mblog" content="2.2.1">
+
+<script th:src="@{/lib/pace/pace.min.js}"></script>
+<link th:href="@{/lib/pace/themes/pace-theme-minimal.css}" rel="stylesheet" />
+
+<link rel='stylesheet' th:href="@{/lib/font-awesome/css/font-awesome.min.css}"/>
+<link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/lib/animate/animate.min.css}">
+<link rel='stylesheet' th:href='@{/css/style.css}'/>
+<link rel='stylesheet' th:href='@{/css/layout.css}'/>
+<link rel='stylesheet' th:href='@{/css/plugins.css}'/>
+<link rel='stylesheet' th:href='@{/css/addons.css|}'/>
+
+<link rel='stylesheet' th:href="@{/lib/baguette/baguetteBox.min.css}"/>
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/utils.js}"></script>
+<script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/sea.js}"></script>
+<script type="text/javascript" th:src="@{/js/sea.config.js}"></script>
+
+<!-- Favicons -->
+<link rel="apple-touch-icon-precomposed" href="http://mtons.com/dist/images/logo.png"/>
+<link rel="shortcut icon" href="http://mtons.com/dist/images/logo.png"/>
+
+<script type="text/javascript">
+    var _base_path = '$!{base}';
+
+    window.app = {
+        base: '',
+        LOGIN_TOKEN: '$!{profile.id}'
+    };
+	
+	window.UEDITOR_HOME_URL = '/assets/vendors/ueditor/';
+</script>
+</head>
+<body>
+
+<!-- Login dialog BEGIN -->
+<div id="loginalert" style="display: none; top: 0px;" class="fade in">
+    <div class="pd20 loginpd">
+        <h3><i class="closealert fr" data-dismiss="modal" aria-label="Close"></i><div class="clear"></div></h3>
+        <div class="loginwrap">
+            <div class="loginh">
+                <div class="fl">会员登录</div>
+                <div class="fr">还没有账号<a id="sigup_now" href="/reg">立即注册</a></div>
+            </div>
+            <h3><span class="login_warning" id="login_warning" style="display: none;">用户名或密码错误</span><div class="clear"></div></h3>
+            <form action="" method="post" id="login_form">
+                <div class="logininput">
+                    <input type="text" id="alt_un" name="username" class="loginusername" value="" placeholder="用户名">
+                    <input type="password" id="alt_pw" name="password" class="loginuserpasswordp" placeholder="密码">
+                </div>
+                <div class="loginbtn">
+                    <div class="loginsubmit fl"><input type="button" value="登录" id="alt_login" class="btn"></div>
+                    <!--
+                    <div class="fr" style="margin:26px 0 0 0;"><a href="##">忘记密码?</a></div>
+                    -->
+                    <div class="clear"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="thirdlogin">
+        <div class="pd50">
+            <h4>用第三方帐号直接登录</h4>
+            <ul>
+                <li id="sinal"><a href="/oauth/callback/call_weibo">微博帐号注册</a></li>
+                <li id="qql" style="margin-right: 0px;"><a href="/oauth/callback/call_qq">QQ帐号注册</a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- Login dialog END -->
+
+<!-- Header BEGIN -->
+<div class="top-wrap">
+    <nav class="navbar navbar-inverse" role="navigation">
+<!--[if lt IE 9]>
+<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-bottom:0">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      <strong>您正在使用低版本浏览器，</strong> 在本页面的显示效果可能有差异。
+        建议您升级到
+        <a href="http://www.google.cn/intl/zh-CN/chrome/" target="_blank">Chrome</a>
+        或以下浏览器：
+        <a href="www.mozilla.org/en-US/firefox/‎" target="_blank">Firefox</a> /
+        <a href="http://www.apple.com.cn/safari/" target="_blank">Safari</a> /
+        <a href="http://www.opera.com/" target="_blank">Opera</a> /
+        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">Internet Explorer 9+</a>
+</div>
+<![endif]-->
+    	<div class="container">
+    		<div class="navbar-header">
+    			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    				<span class="sr-only">Toggle navigation</span>
+    				<span class="icon-bar"></span>
+    				<span class="icon-bar"></span>
+    				<span class="icon-bar"></span>
+    			</button>
+    			<a class="navbar-brand logo" href="/index"><img src="/assets/images/logo/logo_full.png"></a>
+    		</div>
+    		<div id="navbar" class="navbar-collapse collapse">
+    			<ul class="nav navbar-nav">
+    				<li data="home">
+    					<a href="/home" nav="home">我的主页</a>
+    				</li>
+					<li>
+    					<a href="/g/blog" nav="博文">博文</a>
+    				</li>
+					<li>
+    					<a href="/g/web" nav="WEB">WEB</a>
+    				</li>
+					<li>
+    					<a href="/g/tutorial" nav="教程">教程</a>
+    				</li>
+					
+    			</ul>
+    			<div id="_search_box" class="search-box navbar-left hidden-xs hidden-sm">
+    				<form class="navbar-form" method="get" action="/search">
+    					<input type="text" class="form-control" name="q" placeholder="搜索...">
+						<button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
+    				</form>
+    			</div>
+    			
+    			<ul class="nav navbar-nav navbar-right sign">
+					<li class="dropdown">
+                        <a href="/post/new" class="publish"><i class="fa fa-magic"></i> 写文章</a>
+					</li>
+    				<li class="dropdown">
+    					<a href="#" class="ava dropdown-toggle" data-toggle="dropdown">
+    						<img class="img-circle" src="/assets/images/ava/default.png">
+    					</a>
+    					<ul class="dropdown-menu" role="menu">
+    		                <li>
+    		                	<a href="/account/profile" class="ava">
+    <img class="img-circle" src="/assets/images/ava/default.png"/>
+    		                		<span>小豆丁</span>
+    		                	</a>
+    		               	</li>
+    		                <li class="divider"></li>
+
+								<li><a href="/admin">后台管理</a></li>
+
+    		                <li><a href="/logout">退出</a></li>
+    		              </ul>
+    				</li>
+    			</ul>
+    		</div>
+    	</div>
+    </nav>
+</div>
+<script type="text/javascript">
+$(function () {
+	$('a[nav]').each(function(){  
+        $this = $(this);
+        if($this[0].href == String(window.location)){  
+            $this.closest('li').addClass("active");  
+        }  
+    });
+});
+</script>
+<!-- Header END -->
+    <!--.site-main -->
+    <div class="wrap" id="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="main clearfix">
+                    <div class="col-xs-12 col-md-12">
+
+<div class="panel panel-default stacked">
+	<div class="panel-heading">
+		<ul class="nav nav-pills account-tab">
+			<li><a href="profile">基本信息</a></li>
+			<li class="active"><a href="avatar">修改头像</a></li>
+			<li><a href="password">修改密码</a></li>
+		</ul>
+	</div>
+	<div class="panel-body">
+		<div id="message">
+
+		</div>
+		<form class="form-horizontal" action="avatar" method="post">
+			<input type="hidden" id="x" name="x" value=""/>
+			<input type="hidden" id="y" name="y" value=""/>
+			<input type="hidden" id="width" name="width" value=""/>
+			<input type="hidden" id="height" name="height" value=""/>
+			<input type="hidden" id="path" name="path" value=""/>
+
+			<div class="upload-btn">
+				<label>
+					<span>点击选择一张图片</span>
+					<input id="upload_btn" type="file" name="file" accept="image/*" title="点击添加图片">
+				</label>
+			</div>
+			<div class="update_ava">
+				<img src="/assets/images/ava/default.png" id="target" alt="[Jcrop Example]" />
+			</div>
+
+			<div class="form-group">
+				<div class="text-center">
+					<button type="submit" class="btn btn-primary">提交</button>
+				</div>
+			</div>
+		</form>
+	</div><!-- /panel-content -->
+</div><!-- /panel -->
+
+<script type="text/javascript">
+    seajs.use('avatar');
+</script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer>
+	<div class="footer-nav">
+		<div class="container">
+			<ul class="about-ul list-inline clearfix">
+				<li><a href="/about">关于我们</a></li>
+				<li><a href="/joinus">联系我们</a></li>
+				<li><a href="/faqs">常见问题</a></li>
+                <li>
+                    <script>
+                        var _hmt = _hmt || [];
+                        (function() {
+                            var hm = document.createElement("script");
+                            hm.src = "//hm.baidu.com/hm.js?a029e6c6dddf427f4cbfb2b00d7d5311";
+                            var s = document.getElementsByTagName("script")[0];
+                            s.parentNode.insertBefore(hm, s);
+                        })();
+                    </script>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="container mode-link">
+        <h3 class="t-h3">友情链接</h3>
+        <ul class="list-inline">
+            <li><a href="http://www.mtons.com" target="_blank" title="Mtons社区">Mtons社区</a></li>
+        </ul>
+    </div>
+	<div class="container copy-right">
+		<span> <a
+			href="http://www.miitbeian.gov.cn/" target="_blank"></a>
+		</span>
+		<span class="pull-right">Powered By <a href="http://mtons.com/?copyright" target="_blank">Mtons</a></span>
+	</div>
+
+</footer>
+
+<a href="#" class="site-scroll-top"></a>
+
+<script type="text/javascript">
+    seajs.use('main', function (main) {
+        main.init();
+    });
+</script></body>
+</html>
