@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments::head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+    <title>归档</title>
+</head>
+<body>
+<!--导航-->
+<nav th:replace="_fragments::menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <!--stackable 可堆叠的，适应手机端-->
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">Blog</h2>
+            <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>首页</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="clone icon"></i>归档</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
+            <div class="right m-item item m-mobile-hide">
+                <div class="ui icon inverted transparent input">
+                    <input type="text" placeholder="Search...">
+                    <!--搜索的的图标-->
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--响应手机端的三个横杠-->
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-larger">
+    <div class="ui container">
+        <!--header-->
+        <div class="ui top attached padded segment">
+            <!--middle aligned 垂直方向居中-->
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui teal header">归档</h3>
+                </div>
+                <div class="right aligned column">
+                    共 <h3 class="ui orange header m-inline-block" th:text="${blogCount}">14</h3> 篇
+                </div>
+            </div>
+        </div>
+        <th:block th:each="item : ${archiveMap}">
+        <h2 class="ui center aligned header" th:text="${item.key}">2017</h2>
+        <div class="ui fluid vertical menu">
+            <!--每一个帖子-->
+            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item" th:each="blog: ${item.value}">
+                <span>
+                    <!--circle：前面的小圆点-->
+                    <i class="mini teal circle icon"></i>&nbsp;&nbsp;<span th:text="${blog.title}">关于刻意练习的清单</span>
+                    <!--后面的时间-->
+                    <div class="ui teal basic left pointing label m-padding-mine" th:text="${#dates.format(blog.updateTime,'MMMdd')}">9月03</div>
+                </span>
+                <!--后面的图标-->
+                <div class="ui orange basic left pointing label m-padding-mine" th:text="${blog.flag}">原创</div>
+            </a>
+        </div>
+        </th:block>
+    </div>
+</div>
+<!--底部-->
+<footer th:replace="_fragments::footer" class="ui inverted vertical segment m-padded-tb-massive">
+    <!--center aligned  居中  container   容器-->
+    <div class="ui center aligned container">
+        <!--把底下的布局分成十六份，grid-->
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <!--这是一个列表-->
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <!--class:ui rounded image  图片圆角-->
+                        <img src="../static/images/logo.jpg" alt="" class="ui rounded image" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header">最新博客</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header">Blog</h4>
+                <p class="m-opacity">这是我的个人博客，这是我的个人博客</p>
+            </div>
+        </div>
+        <!--divider 分割线-->
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-lined m-text-lined m-text-thin m-opacity">
+            @2016-2017 Lirenmi Deslfdjid
+        </p>
+    </div>
+
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /*处理上面的三个点的下拉处理*/
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog")
+</script>
+</body>
+</html>

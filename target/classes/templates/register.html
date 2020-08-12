@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="_fragments::head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css">
+    <title>博客管理注册</title>
+</head>
+<body>
+<br>
+<br>
+<br>
+<br>
+
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-larger">
+    <div class="ui container">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui teal image header">
+                    <div class="content">
+                        前台注册
+                    </div>
+                </h2>
+                <form class="ui large form" method="post">
+                    <input type="hidden" name="id">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" id="username" name="username" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="nickname" id="nickname" placeholder="昵称">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="address card outline icon"></i>
+                                <input type="email" name="email" id="email" placeholder="电子邮件">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="mobile alternate icon"></i>
+                                <input type="text" name="phone" id="phone" placeholder="手机号码">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" id="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <button type="button" id="cc" class="ui fluid large teal button">注 册</button>
+                    </div>
+
+                    <div class="ui error mini message"></div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script th:src="@{/lib/layer/layer.js}"></script>
+<script>
+    $('.ui.form').form({
+        fields : {
+            username: {
+                identifier: 'username',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入用户名'
+                }]
+            },
+            nickname: {
+                identifier: 'nickname',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入昵称'
+                }]
+            },
+            email: {
+                identifier: 'email',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入邮箱'
+                }]
+            },
+            phone: {
+                identifier: 'phone',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入手机号'
+                }]
+            },
+            password: {
+                identifier: 'password',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入密码'
+                }]
+            }
+        }
+    });
+    /*处理上面的三个点的下拉处理*/
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $("#cc").click(function () {
+        var layer1 = layer.msg("正在处理....",{
+            icon: 16,
+            shade: 0.05,
+            time:0
+        });
+        var params={
+            username: $("#username").val(),
+            nickname: $("#nickname").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+            phone: $("#phone").val(),
+        };
+        $.ajax({
+            type: "POST",
+            url: '/register',
+            dataType: "JSON",
+            contentType:"application/json;charset=utf-8",
+            data: JSON.stringify(params),
+            success: function (data) {
+                if (data.code == 300){
+                    layer.msg("用户名被占用了",function () {
+                    });
+                }
+                if (data.code == 301){
+                    layer.msg("邮箱已经存在",function () {
+                    });
+                }
+                if (data.code == 302){
+                    layer.msg("手机号已经存在",function () {
+                    });
+                }
+                if (data.code==200){
+                    layer.msg("恭喜注册成功",{icon: 6});
+                    setTimeout(function () {
+                        window.location.href = '/'
+                    },2000);
+                }
+                layer.close(layer1);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.close(layer1);
+                layer.msg("服务器通讯错误",function () {
+                });
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
