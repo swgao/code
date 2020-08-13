@@ -15,16 +15,19 @@
 
     <link rel='stylesheet' th:href="@{/lib/font-awesome/css/font-awesome.min.css}"/>
     <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+    <script type="text/javascript" th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
     <link rel="stylesheet" th:href="@{/lib/animate/animate.min.css}">
     <link rel='stylesheet' th:href='@{/css/style.css}'/>
     <link rel='stylesheet' th:href='@{/css/layout.css}'/>
     <link rel='stylesheet' th:href='@{/css/plugins.css}'/>
-    <link rel='stylesheet' th:href='@{/css/addons.css|}'/>
+    <link rel='stylesheet' th:href='@{/css/addons.css}'/>
 
     <link rel='stylesheet' th:href="@{/lib/baguette/baguetteBox.min.css}"/>
-
+    <script type="text/javascript" th:src="@{/lib/baguette/baguetteBox.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/validate/jquery-validate.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>
     <script type="text/javascript" th:src="@{/js/utils.js}"></script>
     <script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
     <script type="text/javascript" th:src="@{/js/sea.js}"></script>
@@ -34,16 +37,6 @@
     <link rel="apple-touch-icon-precomposed" href="http://mtons.com/dist/images/logo.png"/>
     <link rel="shortcut icon" href="http://mtons.com/dist/images/logo.png"/>
 
-    <script type="text/javascript">
-        var _base_path = '$!{base}';
-
-        window.app = {
-            base: '',
-            LOGIN_TOKEN: '$!{profile.id}'
-        };
-
-        window.UEDITOR_HOME_URL = '/assets/vendors/ueditor/';
-    </script>
 </head>
 <body>
 
