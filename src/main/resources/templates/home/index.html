@@ -6,7 +6,7 @@
 </head>
 <body>
 <!--导航-->
-<nav th:replace="_fragments::menu(5)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+<nav th:replace="_fragments::menu(6)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
     <div class="ui container">
         <!--stackable 可堆叠的，适应手机端-->
         <div class="ui inverted secondary stackable menu">
@@ -37,14 +37,16 @@
         <div class="four wide column">
             <div class="ui middle aligned card">
                 <div class="image">
-                    <img th:src="@{images/logo.jpg}">
+                    <img th:src="${session.user.getAvatar()}">
                 </div>
                 <div class="content">
-                    <a class="header">Kristy</a>
+                    <a class="header center aligned" th:text="${session.user.getNickname()}">Kristy</a>
                     <div class="meta">
-                        <span class="date">2013年加入</span>
+                        <span class="date" th:text="|&nbsp;&nbsp;&nbsp;&nbsp;${session.user.getSign()}">2013年加入</span>
                     </div>
-                    <div class="description">Kristy is an art director living in New York. </div>
+                    <div class="center aligned">
+                        <a th:href="@{/home/profile}" class="ui positive button mini ">修改资料</a>
+                    </div>
                 </div>
             </div>
             <div class="ui vertical pointing menu">

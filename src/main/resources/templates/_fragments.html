@@ -23,6 +23,7 @@
             <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3}?'active'"><i class="tags icon"></i>标签</a>
             <a href="#" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==4}?'active'"><i class="clone icon"></i>归档</a>
             <a href="#" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==5}?'active'"><i class="info icon"></i>关于我</a>
+            <a href="#" th:href="@{/home}" class="m-item item m-mobile-hide" th:classappend="${n==6}?'active'"><i class="info icon"></i>个人中心</a>
             <div class="right m-item item m-mobile-hide">
                 <form action="#" name="search" method="post" th:action="@{/search}">
                     <div class="ui icon inverted transparent input">
@@ -33,8 +34,19 @@
                 </form>
             </div>
             <div class="right m-item item m-mobile-hide" th:if="${session.user} == null">
-                <a href="#"  class=" item m-mobile-hide">登录</a>
+                <a href="#" th:href="@{/admin}" class=" item m-mobile-hide">登录</a>
                 <a href="#" th:href="@{/re}" class=" item m-mobile-hide">注册</a>
+            </div>
+            <div class="ui dropdown item" th:if="${session.user}!= null">
+                <div class="text">
+                    <img th:src="${session.user.avatar}" alt="" class="ui avatar image">
+                    <span th:text="${session.user.getNickname()}"></span>
+                </div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a th:href="@{/home}" class="item">个人中心</a>
+                    <a th:href="@{/admin/logout}" class="item">注销</a>
+                </div>
             </div>
         </div>
     </div>
