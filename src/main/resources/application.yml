@@ -5,3 +5,4 @@ spring:
     active: dev
 
 comment.avatar: /images/logo.jpg
+STORE_ROOT_PATH: D:/data

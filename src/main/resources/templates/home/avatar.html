@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" class="app">
+<html lang="en" class="app" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -191,7 +191,7 @@ $(function () {
 		<div id="message">
 
 		</div>
-		<form class="form-horizontal" action="avatar" method="post">
+		<form class="form-horizontal" th:action="@{/home/avatar}" method="post">
 			<input type="hidden" id="x" name="x" value=""/>
 			<input type="hidden" id="y" name="y" value=""/>
 			<input type="hidden" id="width" name="width" value=""/>
@@ -205,7 +205,7 @@ $(function () {
 				</label>
 			</div>
 			<div class="update_ava">
-				<img src="/assets/images/ava/default.png" id="target" alt="[Jcrop Example]" />
+				<img th:src="${session.user.getAvatar()}" id="target" alt="[Jcrop Example]" />
 			</div>
 
 			<div class="form-group">

@@ -17,22 +17,22 @@ seajs.config({
         'view': 'modules/view',
         'webuploader': 'modules/webuploader',
 
-            /* vendors */
-        'bootstrap': 'vendors/bootstrap/js/bootstrap.min',
-        'baguetteBox': 'vendors/baguette/baguetteBox.min',
-        'layer': 'vendors/layer/layer',
-        'pace': 'vendors/pace/pace.min',
-        'pjax': 'vendors/pjax/jquery.pjax',
-        'dmuploader': 'vendors/uploader/dmuploader',
-        'webuploader.min': 'vendors/webuploader/webuploader.min',
-        'webuploader.css': 'vendors/webuploader/webuploader.css',
-        'jcrop': 'vendors/jcrop/jquery.jcrop.min',
-        'validate': 'vendors/validate/jquery-validate',
-        'lazyload': 'vendors/lazyload/jquery.lazyload',
+            /* lib */
+        'bootstrap': 'lib/bootstrap/js/bootstrap.min',
+        'baguetteBox': 'lib/baguette/baguetteBox.min',
+        'layer': 'lib/layer/layer',
+        'pace': 'lib/pace/pace.min',
+        'pjax': 'lib/pjax/jquery.pjax',
+        'dmuploader': 'lib/uploader/dmuploader',
+        'webuploader.min': 'lib/webuploader/webuploader.min',
+        'webuploader.css': 'lib/webuploader/webuploader.css',
+        'jcrop': 'lib/jcrop/jquery.jcrop.min',
+        'validate': 'lib/validate/jquery-validate',
+        'lazyload': 'lib/lazyload/jquery.lazyload',
 
-        'ueditor': 'vendors/ueditor/ueditor.all.min',
-        'ueditor.config': 'vendors/ueditor/ueditor.config',
-        'ueditor.parse': 'vendors/ueditor/ueditor.parse.min'
+        'ueditor': 'lib/ueditor/ueditor.all.min',
+        'ueditor.config': 'lib/ueditor/ueditor.config',
+        'ueditor.parse': 'lib/ueditor/ueditor.parse.min'
     },
 
     // 预加载项
@@ -40,7 +40,7 @@ seajs.config({
 
         // 路径配置
     paths: {
-        'vendors': '../../vendors',
+        'lib': '../../lib',
     },
 
     // 变量配置

@@ -21,6 +21,7 @@ public class User {
     private String nickname;
     private String username;
     private String password;
+    private String sign;
     private String email;
     private String avatar;
     private String salt;
