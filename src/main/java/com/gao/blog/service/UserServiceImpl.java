@@ -48,16 +48,17 @@ public class UserServiceImpl implements UserService{
         // 获取用户
         User user1 = userRepository.getOne(user.getId());
         String salt = user1.getSalt();
+        System.out.println(oldPassword);
         String r = DigestHelper.getSha1(oldPassword+salt);
         if (r.equals(user1.getPassword())){
             user1.setSalt(UUID.randomUUID().toString());
             String newpassword = DigestHelper.getSha1(password+user1.getSalt());
             user1.setPassword(newpassword);
             userRepository.save(user1);
+            return Result.of(200);
         }else{
-            Result.of(300);
+            return Result.of(300);
         }
-        return Result.of(200);
     }
     @Transactional
     @Override

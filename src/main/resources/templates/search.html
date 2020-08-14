@@ -127,7 +127,10 @@
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide');
     });
-    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog")
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+    $(".ui.dropdown").dropdown({
+        on: "hover"
+    });
 </script>
 </body>
 </html>

@@ -124,4 +124,8 @@ public class HomeController {
     public Object updatePassword(String oldPassword,String password){
         return userService.updatePasswrod(oldPassword,password);
     }
+    @GetMapping("/email")
+    public String email(){
+        return "home/email";
+    }
 }
