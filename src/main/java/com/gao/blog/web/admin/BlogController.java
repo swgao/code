@@ -38,6 +38,13 @@ public class BlogController {
     @Autowired
     TagService tagService;
 
+    /**
+     * 后台博客页面
+     * @param model
+     * @param pageable
+     * @param blog
+     * @return
+     */
     @GetMapping("/blogs")
     public String blogs(Model model, @PageableDefault(size = 2,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog){
         model.addAttribute("page",blogService.listBlog(pageable,blog));
@@ -81,6 +88,12 @@ public class BlogController {
         model.addAttribute("tags",tagService.listTag());
     }
 
+    /**
+     * 编辑博客，根据id
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/blogs/{id}/input")
     public String editInput(@PathVariable("id")Long id, Model model){
         setTypeAndTag(model);
@@ -90,9 +103,15 @@ public class BlogController {
         return INPUT;
     }
 
+    /**
+     * 编辑完的保存处理
+     * @param blog
+     * @param session
+     * @param attributes
+     * @return
+     */
     @PostMapping("/blogs")
     public String post(Blog blog, HttpSession session, RedirectAttributes attributes){
-
         blog.setUser((User) session.getAttribute("user"));
         blog.setType(typeService.getType(blog.getType().getId()));
         blog.setTags(tagService.listTag(blog.getTagIds()));

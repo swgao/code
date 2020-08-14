@@ -34,6 +34,13 @@ public class IndexController {
     TypeService typeService;
     @Autowired
     TagService tagService;
+
+    /**
+     * 主页面
+     * @param model
+     * @param pageable
+     * @return
+     */
     @RequestMapping({"/index","/"})
     public String index(Model model, @PageableDefault(size = 5,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
         model.addAttribute("page",blogService.listBlog(pageable));
@@ -42,15 +49,42 @@ public class IndexController {
         model.addAttribute("recommendBLogs",blogService.listRecommendBlogTop(8));
         return "index";
     }
+
+    /**
+     * 根据id 进入博客详情
+     * @param id
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("/blog/{id}")
-    public String blog(@PathVariable("id") Long id,Model model){
+    public String blog(@PathVariable("id") Long id,Model model,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user != null){
+            model.addAttribute("ids",1);
+        }else{
+            model.addAttribute("ids",2);
+        }
         model.addAttribute("blog",blogService.getBlog(id));
         return "blog";
     }
+
+    /**
+     * 标签页
+     * @return
+     */
     @GetMapping("/tags")
     public String tags(){
         return "tags";
     }
+
+    /**
+     * 搜索处理
+     * @param query
+     * @param model
+     * @param pageable
+     * @return
+     */
     @PostMapping("/search")
     public String search(@RequestParam String query, Model model, @PageableDefault(size = 5,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
         model.addAttribute("page",blogService.listBlog(pageable,"%"+query+"%"));
@@ -58,6 +92,11 @@ public class IndexController {
         return "search";
     }
 
+    /**
+     * 最下面的最新博客处理
+     * @param model
+     * @return
+     */
     @GetMapping("/footer/newblog")
     public String newblogs(Model model){
         model.addAttribute("newblogList",blogService.listRecommendBlogTop(3));

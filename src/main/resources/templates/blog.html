@@ -166,6 +166,7 @@
                         </div>
                     </div>
                     <div class="field m-mobile-wide m-margin-bottom-small">
+                        <input type="hidden" id="ids" th:value="${ids}" style="display: none !important;">
                         <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
                     </div>
                 </div>
@@ -251,6 +252,7 @@
 <script src="../static/lib/editormd/lib/flowchart.min.js" th:src="@{/lib/editormd/lib/flowchart.min.js}"></script>
 <script src="../static/lib/editormd/lib/jquery.flowchart.min.js" th:src="@{/lib/editormd/lib/jquery.flowchart.min.js}"></script>
 <script src="../static/lib/editormd/lib/editormd.js" th:src="@{/lib/editormd/lib/editormd.js}"></script>
+<script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
 <script th:inline="javascript">
     $(function() {
         editormd.markdownToHTML("test-editormd-view2", {
@@ -359,17 +361,26 @@
             }
         }
     });
-
+    /*点击发布按钮的处理*/
     $("#commentpost-btn").click(function () {
         var boo = $('.ui.form').form('validate form');
         if (boo){
-           console.log('通过')
-            postData();
+            /*获取一个隐藏域的值，如果是1就是登录，可以评论，是2就是没有登录，不可以评论*/
+            var test = $('#ids').val();
+            if (test==1){
+                console.log(test);
+                postData();
+            }
+            if (test==2){
+                layer.msg("请先登录",function () {});
+                console.log('错误');
+            }
+            console.log(test);
         }else{
             console.log('不通过');
         }
     });
-
+    /*数据的发送*/
     function postData() {
         $("#comment-container").load(/*[[@{/comments}]]*/"",{
             "parentComment.id" : $("[name='parentComment.id']").val(),
@@ -389,7 +400,7 @@
         $("[name='content']").attr("placeholder","请输入评论信息...");
 
     }
-
+    /*回复处理*/
     function reply(obj) {
         var commentId = $(obj).data('commentid');
         var commentNickname = $(obj).data('commentnickname');
