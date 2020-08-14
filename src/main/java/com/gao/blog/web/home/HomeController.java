@@ -1,19 +1,27 @@
-package com.gao.blog.web;
+package com.gao.blog.web.home;
 
 import com.gao.blog.dao.UserRepository;
 import com.gao.blog.pojo.User;
+import com.gao.blog.service.BlogService;
+import com.gao.blog.service.TagService;
+import com.gao.blog.service.TypeService;
 import com.gao.blog.service.UserService;
+import com.gao.blog.vo.BlogQuery;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,15 +31,35 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
-
+    @Autowired
+    private BlogService blogService;
+    @Autowired
+    TypeService typeService;
+    @Autowired
+    TagService tagService;
     @Autowired
     UserService userService;
     @Autowired
     UserRepository userRepository;
     @Value("${STORE_ROOT_PATH}")
     String StoreRootPath; // 寻存储根目录
+
+    /**
+     * 个人主页
+     * @param model
+     * @param pageable
+     * @return
+     */
     @RequestMapping({"/index","","/"})
-    public String index(){
+    public String index(Model model, @PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,HttpSession session){
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        HttpSession session = request.getSession();
+//        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
+        // 获取用户
+        User user1 = userRepository.getOne(user.getId());
+        model.addAttribute("page",blogService.homeBlog(pageable,user1.getId()));
+        model.addAttribute("types",typeService.listType());
         return "home/index";
     }
 
@@ -124,6 +152,11 @@ public class HomeController {
     public Object updatePassword(String oldPassword,String password){
         return userService.updatePasswrod(oldPassword,password);
     }
+
+    /**、
+     * 修改邮件页面
+     * @return
+     */
     @GetMapping("/email")
     public String email(){
         return "home/email";

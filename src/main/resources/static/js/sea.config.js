@@ -7,6 +7,7 @@ seajs.config({
 
             /* modules */
         'main': 'modules/main',
+        'home.email': 'modules/home.email',
         'authc': 'modules/authc',
         'sidebox': 'modules/sidebox',
         'post': 'modules/post',
@@ -27,7 +28,7 @@ seajs.config({
         'webuploader.min': 'lib/webuploader/webuploader.min',
         'webuploader.css': 'lib/webuploader/webuploader.css',
         'jcrop': 'lib/jcrop/jquery.jcrop.min',
-        'validate': 'lib/validate/jquery-validate',
+        'validate': 'lib/validate/jquery.validate.min',
         'lazyload': 'lib/lazyload/jquery.lazyload',
 
         'ueditor': 'lib/ueditor/ueditor.all.min',

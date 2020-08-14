@@ -24,10 +24,10 @@ public interface BlogService {
      * @return
      */
     Page<Blog> listBlog(Pageable pageable, BlogQuery blog);
-
     Page<Blog> listBlog(Pageable pageable,Long tagId);
     Page<Blog> listBlog(Pageable pageable);
     Page<Blog> listBlog(Pageable pageable,String query);
+    Page<Blog> homeBlog(Pageable pageable,Long userId);
     /**
      * 保存博客
      * @param blog

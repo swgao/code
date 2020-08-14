@@ -1,6 +1,7 @@
 package com.gao.blog.web;
 
 import com.gao.blog.NotFoundException;
+import com.gao.blog.pojo.User;
 import com.gao.blog.service.BlogService;
 import com.gao.blog.service.TagService;
 import com.gao.blog.service.TypeService;
@@ -11,6 +12,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {

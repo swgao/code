@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en" class="app" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>修改用户信息</title>
-    <meta name="keywords" content="mtons, mtons,博客,社区,摄影,旅游,艺术,娱乐">
-    <meta name="description" content="Mtons, 轻松分享你的兴趣. 便捷的文字、图片发布,扁平化的响应式设计,美观、大气,是您记录生活的最佳选择">
 
 	<script th:src="@{/lib/pace/pace.min.js}"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+	<link rel="stylesheet" th:href="@{/css/me.css}">
 	<link th:href="@{/lib/pace/themes/pace-theme-minimal.css}" rel="stylesheet" />
 	<link rel='stylesheet' th:href="@{/lib/font-awesome/css/font-awesome.min.css}"/>
 	<link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
@@ -23,111 +22,92 @@
 	<script type="text/javascript" th:src="@{/lib/validate/jquery.validate.min.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/validate/messages_zh.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/utils.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
 	<script type="text/javascript" th:src="@{/js/sea.js}"></script>
 	<script type="text/javascript" th:src="@{/js/sea.config.js}"></script>
-	<script type="text/javascript" th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-	<link rel="stylesheet" th:href="@{/css/me.css}">
 	<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+	<style>
+		.popover-content{width:200px}
+	</style>
 </head>
 <body>
 
-<script type="text/javascript">
-$(function () {
-	$('a[nav]').each(function(){  
-        $this = $(this);
-        if($this[0].href == String(window.location)){  
-            $this.closest('li').addClass("active");  
-        }  
-    });
-});
-</script>
 <nav th:replace="_fragments::menu(3)"></nav>
-<!-- Header END -->
-    <!--.site-main -->
-    <div class="wrap" id="wrap">
-        <div class="container">
-            <div class="row">
-                <div class="main clearfix">
-                    <div class="col-xs-12 col-md-12">
-
-<div class="panel panel-default stacked">
-	<div class="panel-heading">
-		<ul class="nav nav-pills account-tab">
-			<li class="active"><a href="profile">基本信息</a></li>
-			<li><a href="avatar">修改头像</a></li>
-			<li><a href="password">修改密码</a></li>
-		</ul>
+<div class="wrap" id="wrap">
+	<div class="container">
+		<div class="row">
+			<div class="main clearfix">
+				<div class="col-xs-12 col-md-12">
+					<div class="panel panel-default stacked">
+						<div class="panel-heading">
+							<ul class="nav nav-pills account-tab">
+								<li><a href="profile">基本信息</a></li>
+								<li><a href="avatar">修改头像</a></li>
+								<li><a href="password">修改密码</a></li>
+							</ul>
+						</div>
+						<div class="panel-body">
+							<div id="message">
+							</div>
+							<div class="tab-pane active" id="profile">
+								<form id="pf" method="post" class="form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-lg-3">邮箱</label>
+										<div class="col-lg-4">
+											<input type="email" class="form-control" name="email" th:value="${session.user.getNickname()}">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">提交</button>
+										</div>
+									</div><!-- /form-actions -->
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="panel-body">
-		<div id="message">
-
-		</div>
-		<div class="tab-pane active" id="profile">
-			<form id="pf" th:action="@{/home/profile/update}" method="post" class="form-horizontal">
-				<div class="form-group">
-					<label class="control-label col-lg-3" for="nickname">昵称</label>
-					<div class="col-lg-4">
-						<input type="text" class="form-control" name="nickname" th:value="${session.user.getNickname()}" maxlength="7" data-required>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-lg-3" for="email">邮箱地址</label>
-					<div class="col-lg-4">
-						<span class="form-control" th:text="${session.user.getEmail()}"></span>
-					</div>
-					<div class="col-lg-3" style="padding-top: 6px;">
-							<span class="label label-success">已验证</span>
-						<a href="/account/email">修改邮箱</a>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-lg-3" for="nickname">个性签名</label>
-					<div class="col-lg-6">
-						<textarea name="sign" class="form-control" rows="3" maxlength="128"  th:text="${session.user.getSign()!=null} ? ${session.user.getSign()}: '这个人很懒，什么都没留下'"></textarea>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="text-center">
-						<button type="submit" class="btn btn-primary">提交</button>
-					</div>
-				</div><!-- /form-actions -->
-			</form>
-		</div>
-	</div><!-- /panel-content -->
-</div><!-- /panel -->
-
-<script type="text/javascript">
-$(function () {
-	$('#pf').validate({
-		onKeyup : true,
-		onChange : true,
-		eachValidField : function() {
-			$(this).closest('div').removeClass('has-error').addClass('has-success');
-		},
-		eachInvalidField : function() {
-			$(this).closest('div').removeClass('has-success').addClass('has-error');
-		}
-	});
-});
-</script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
 <a href="#" class="site-scroll-top"></a>
 
 <script type="text/javascript">
-    seajs.use('main', function (main) {
-        main.init();
-    });
-</script>
-<script>
 	$(".ui.dropdown").dropdown({
 		on: "hover"
+	});
+	$("#pf").validate({
+		debug:true, //只验证，不提交
+		rules : {
+			email: {
+				required: true,
+				email: true
+			}
+			},
+			messages: {
+				email: {
+					required: "请输入邮箱",
+					email: '邮箱格式不正确'
+				}
+			},
+			errorPlacement: function (error, element) {
+				element.popover('destroy');
+				element.popover({
+					content: error[0].innerHTML
+				});
+				element.click();
+				element.closest('div').removeClass('has-success').addClass('has-error');
+			},
+			success: function (a, b) {
+				$(b).parent().removeClass('has-error').addClass('has-success');
+				$(b).popover('destroy');
+			},
+			submitHandler: function (form) { //验证通过执行这里
+				layer.msg("验证通过!",function () {});
+			}
 	});
 </script>
 </body>

@@ -22,7 +22,6 @@ public class LoginShowController {
 
     @GetMapping("/re")
     public String toRegister(){
-
         return "register";
     }
 

@@ -142,59 +142,6 @@
                                 </div>
                             </div>
                         </div>
-<!--                        <div class="comment">-->
-<!--                            <a class="avatar">-->
-<!--                                <img src="../static/images/logo.jpg">-->
-<!--                            </a>-->
-<!--                            <div class="content">-->
-<!--                                <a class="author">Elliot Fu</a>-->
-<!--                                <div class="metadata">-->
-<!--                                    <span class="date">Yesterday at 12:30AM</span>-->
-<!--                                </div>-->
-<!--                                <div class="text">-->
-<!--                                    <p>This has been very useful for my research. Thanks as well!</p>-->
-<!--                                </div>-->
-<!--                                <div class="actions">-->
-<!--                                    <a class="reply">回复</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="comments">-->
-<!--                                <div class="comment">-->
-<!--                                    <a class="avatar">-->
-<!--                                        <img src="../static/images/logo.jpg">-->
-<!--                                    </a>-->
-<!--                                    <div class="content">-->
-<!--                                        <a class="author">Jenny Hess</a>-->
-<!--                                        <div class="metadata">-->
-<!--                                            <span class="date">Just now</span>-->
-<!--                                        </div>-->
-<!--                                        <div class="text">-->
-<!--                                            Elliot you are always so right :)-->
-<!--                                        </div>-->
-<!--                                        <div class="actions">-->
-<!--                                            <a class="reply">回复</a>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="comment">-->
-<!--                            <a class="avatar">-->
-<!--                                <img th:src="@{/images/logo.jpg}">-->
-<!--                            </a>-->
-<!--                            <div class="content">-->
-<!--                                <a class="author">Joe Henderson</a>-->
-<!--                                <div class="metadata">-->
-<!--                                    <span class="date">5 days ago</span>-->
-<!--                                </div>-->
-<!--                                <div class="text">-->
-<!--                                    Dude, this is awesome. Thanks so much-->
-<!--                                </div>-->
-<!--                                <div class="actions">-->
-<!--                                    <a class="reply">回复</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -308,17 +255,17 @@
     $(function() {
         editormd.markdownToHTML("test-editormd-view2", {
             markdown        : "\r\n" + $("#append-test").text(),
-            //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+            htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
             htmlDecode      : "style,script,iframe",  // you can filter tags decode
-            //toc             : false,
-            tocm            : true,    // Using [TOCM]
-            //tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
-            //gfm             : false,
-            //tocDropdown     : true,
-            //markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+            htmlDecode : "style,script,iframe|on*",
+            codeFold : true,
+            taskList : true,
+            tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart : true,             // 开启流程图支持，默认关闭
+            sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+            path    : "/lib/editormd/lib/",
             emoji           : true,
             taskList        : true,
-            tex             : true,  // 默认不解析
             flowChart       : true,  // 默认不解析
             sequenceDiagram : true,  // 默认不解析
         });
@@ -416,7 +363,7 @@
     $("#commentpost-btn").click(function () {
         var boo = $('.ui.form').form('validate form');
         if (boo){
-            console.log('通过');
+           console.log('通过')
             postData();
         }else{
             console.log('不通过');

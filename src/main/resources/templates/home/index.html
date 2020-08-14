@@ -60,14 +60,55 @@
             </div>
         </div>
         <div class="twelve wide  tab column segment">
-            <div class="ui attached tab segment" data-tab="first">First
-                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            </div>
-            <div class="ui attached tab segment active" data-tab="second">
-                <div class="ui vertical menu">
-                    <a class="teal item">收件箱 <div class="ui teal left pointing label">1</div>
-                    </a>
+            <div class="ui attached tab segment active" data-tab="first">
+                <div id="table-container">
+                    <table th:fragment="blogList" class="ui compact teal table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>标题</th>
+                            <th>类型</th>
+                            <th>推荐</th>
+                            <th>状态</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="blog,iterStat: ${page.content}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td th:text="${blog.title}">可以联系清单</td>
+                            <td th:text="${blog.type.name}">认知升级</td>
+                            <td th:text="${blog.recommend} ? '是':'否'">是</td>
+                            <td th:text="${blog.published} ? '草稿':'发布'">是</td>
+                            <td th:text="${blog.updateTime}">2017-10-02 09:00</td>
+                            <td>
+                                <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">编辑</a>
+                                <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th colspan="7">
+                                <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                                    <a th:href="@{/home(page=${page.number}-1)}" th:unless="${page.first}" class="item">上一页</a>
+                                    <a th:href="@{/home(page=${page.number}+1)}" th:unless="${page.last}" class="item">下一页</a>
+                                </div>
+                                <a href="" th:href="@{/admin/blogs/input}" class="ui mini right floated teal basic button">新增</a>
+                            </th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                        <i class="close icon"></i>
+                        <div class="header">提示: </div>
+                        <p th:text="${message}">恭喜，操作成功</p>
+                    </div>
+
                 </div>
+            </div>
+            <div class="ui attached tab segment" data-tab="second">
             </div>
             <div class="ui attached tab segment" data-tab="third">Third </div>
             <div class="ui attached tab segment" data-tab="four">Third </div>
@@ -81,7 +122,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <script>
-
+    /*侧边列表*/
     $('.menu .item')
         .tab()
     ;
@@ -89,9 +130,14 @@
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide');
     });
+    /*头像下拉*/
     $(".ui.dropdown").dropdown({
         on: "hover"
     });
+    /*消息提示关闭初始化*/
+    $(".message .close").on('click',function () {
+        $(this).closest(".message").transition('fade');
+    })
 </script>
 </body>
 </html>

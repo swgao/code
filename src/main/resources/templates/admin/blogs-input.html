@@ -199,6 +199,7 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
 <script th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script>
     /*初始化markdown*/
@@ -208,6 +209,18 @@
             width   : "100%",
             height  : 640,
             syncScrolling : "single",
+            previewCodeHighlight : true,
+            htmlDecode : "style,script,iframe|on*",
+            emoji: true,
+            codeFold : true,
+            taskList : true,
+            imageUpload : true,
+            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL : "upload/editormdImg/",//注意你后端的上传图片服务地址
+            tocm            : true,         // Using [TOCM]
+            tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart : true,             // 开启流程图支持，默认关闭
+            sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
             path    : "/lib/editormd/lib/"
         });
     });

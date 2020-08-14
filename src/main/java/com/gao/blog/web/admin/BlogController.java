@@ -105,6 +105,13 @@ public class BlogController {
         return REDIRECT_LIST;
     }
 
+    /**
+     * 博客更新
+     * @param blog
+     * @param session
+     * @param attributes
+     * @return
+     */
     @PostMapping("/blogs/update")
     public String update(Blog blog, HttpSession session, RedirectAttributes attributes){
         blog.setUser((User) session.getAttribute("user"));
@@ -116,12 +123,19 @@ public class BlogController {
         }else {
             attributes.addFlashAttribute("message","操作成功");
         }
-        return REDIRECT_LIST;
+        return"redirect:/home";
     }
 
+    /**
+     * 博客删除
+     * @param attributes
+     * @param id
+     * @return
+     */
     @GetMapping("/blogs/{id}/delete")
     public String delete(RedirectAttributes attributes,@PathVariable("id") Long id){
         blogService.deleteBlog(id);
         return REDIRECT_LIST;
     }
+
 }

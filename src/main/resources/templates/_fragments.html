@@ -9,6 +9,8 @@
     <link rel="stylesheet" th:href="@{/lib/tocbot/tocbot.css}">
     <link rel="stylesheet" th:href="@{/css/animate.min.css}">
     <script th:src="@{/lib/layer/layer.js}"></script>
+    <script th:src="@{/lib/pace/pace.min.js}"></script>
+    <link th:href="@{/lib/pace/themes/pace-theme-minimal.css}" rel="stylesheet" />
     <title th:replace="${title}">博客详情</title>
 </head>
 <body>
@@ -23,7 +25,7 @@
             <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3}?'active'"><i class="tags icon"></i>标签</a>
             <a href="#" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==4}?'active'"><i class="clone icon"></i>归档</a>
             <a href="#" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==5}?'active'"><i class="info icon"></i>关于我</a>
-            <a href="#" th:href="@{/home}" class="m-item item m-mobile-hide" th:classappend="${n==6}?'active'"><i class="info icon"></i>个人中心</a>
+            <a href="#" th:href="@{/home}" th:if="${session.user} != null" class="m-item item m-mobile-hide" th:classappend="${n==6}?'active'"><i class="info icon"></i>个人中心</a>
             <div class="right m-item item m-mobile-hide">
                 <form action="#" name="search" method="post" th:action="@{/search}">
                     <div class="ui icon inverted transparent input">
@@ -44,6 +46,7 @@
                 </div>
                 <i class="dropdown icon"></i>
                 <div class="menu">
+                    <a th:href="@{/admin/blogs/input}" class="item">发布文章</a>
                     <a th:href="@{/home}" class="item">个人中心</a>
                     <a th:href="@{/admin/logout}" class="item">注销</a>
                 </div>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -30,7 +31,7 @@ public class LoginController {
      * 后台登录页面跳转
      * @return
      */
-    @GetMapping
+    @GetMapping({"/login","","/"})
     public String LoginPage(){
         return "admin/login";
     }
@@ -53,7 +54,7 @@ public class LoginController {
             if (user!=null){
                 user.setPassword(null);
                 session.setAttribute("user",user);
-                return "home/index";
+                return "redirect:/home/index";
             }else {
                 attributes.addFlashAttribute("message","密码错误");
                 return "redirect:/admin";

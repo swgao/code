@@ -128,6 +128,17 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
+    public Page<Blog> homeBlog(Pageable pageable, Long userId) {
+        return blogRepository.findAll(new Specification<Blog>() {
+            @Override
+            public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                Join join = root.join("user");
+                return cb.equal(join.get("id"),userId);
+            }
+        },pageable);
+    }
+
+    @Override
     public List<Blog> listRecommendBlogTop(Integer size) {
         Sort sort = Sort.by(Sort.Direction.DESC,"updateTime");
         Pageable pageable = PageRequest.of(0,size,sort);
