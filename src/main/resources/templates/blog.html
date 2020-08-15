@@ -98,14 +98,14 @@
             <div id="comment-container" class="ui teal segment">
                 <div th:fragment="commentList">
                     <div class="ui dividing comments" style="max-width: 100%">
-                        <h3 class="ui dividing header">评论</h3>
+                        <h3 class="ui dividing header">全部评论: <span th:text="${#arrays.length(list)}"></span>&nbsp;条</h3>
                         <div class="comment" th:each="comment : ${comments}">
                             <a class="avatar">
                                 <img src="../static/images/logo.jpg" th:src="@{${comment.avatar}}">
                             </a>
                             <div class="content">
                                 <a class="author">
-                                    <span  th:text="${comment.nickname}"></span>
+                                    <span  th:text="${comment.user_id.nickname}"></span>
                                     <div class="ui mini basic teal left pointing label" th:if="${comment.adminComment}">博主</div>
                                 </a>
                                 <div class="metadata">
@@ -115,7 +115,7 @@
                                     How artistic!
                                 </div>
                                 <div class="actions">
-                                    <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}" onclick="reply(this)">回复</a>
+                                    <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.user_id.nickname}" onclick="reply(this)">回复</a>
                                 </div>
                             </div>
                             <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
@@ -125,9 +125,9 @@
                                     </a>
                                     <div class="content">
                                         <a class="author">
-                                            <span th:text="${reply.nickname}">Matt</span>&nbsp;
+                                            <span th:text="${reply.user_id.nickname}">Matt</span>&nbsp;
                                             <div class="ui mini basic teal left pointing label" th:if="${reply.adminComment}">博主</div>
-                                            <span th:text="|@ ${reply.parentComment.nickname}" class="m-teal">@ 小白</span>
+                                            <span th:text="|@ ${reply.parentComment.user_id.nickname}" class="m-teal">@ 小白</span>
                                         </a>
                                         <div class="metadata">
                                             <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
@@ -136,7 +136,7 @@
                                             How artistic!
                                         </div>
                                         <div class="actions">
-                                            <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.nickname}" onclick="reply(this)">回复</a>
+                                            <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.user_id.nickname}" onclick="reply(this)">回复</a>
                                         </div>
                                     </div>
                                 </div>
@@ -339,17 +339,17 @@
     $('.ui.form').form({
         fields : {
             title : {
-                identifier: 'name',
-                rules: [{
-                    type: 'empty',
-                    prompt: '请输入评论内容'
-                }]
-            },
-            content : {
                 identifier: 'nickname',
                 rules: [{
                     type: 'empty',
                     prompt: '请输入你的姓名'
+                }]
+            },
+            content : {
+                identifier: 'content',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入评论内容'
                 }]
             },
             email : {

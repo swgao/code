@@ -1,6 +1,7 @@
 package com.gao.blog.web;
 
 import com.gao.blog.NotFoundException;
+import com.gao.blog.dao.CommentRepository;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.BlogService;
 import com.gao.blog.service.TagService;
@@ -34,7 +35,8 @@ public class IndexController {
     TypeService typeService;
     @Autowired
     TagService tagService;
-
+    @Autowired
+    CommentRepository commentRepository;
     /**
      * 主页面
      * @param model
@@ -59,6 +61,9 @@ public class IndexController {
      */
     @RequestMapping("/blog/{id}")
     public String blog(@PathVariable("id") Long id,Model model,HttpSession session){
+        // 返回给请求博客页面的评论个数
+        model.addAttribute("list",commentRepository.findByBlogId(id));
+        System.out.println(commentRepository.findByBlogId(id));
         User user = (User) session.getAttribute("user");
         if (user != null){
             model.addAttribute("ids",1);

@@ -77,7 +77,7 @@
                         <tbody>
                         <tr th:each="blog,iterStat: ${page.content}">
                             <td th:text="${iterStat.count}">1</td>
-                            <td th:text="${blog.title}">可以联系清单</td>
+                            <td><a th:href="@{/blog/{id}(id=${blog.id})}" th:text="${blog.title}"></a></td>
                             <td th:text="${blog.type.name}">认知升级</td>
                             <td th:text="${blog.recommend} ? '是':'否'">是</td>
                             <td th:text="${blog.published} ? '草稿':'发布'">是</td>

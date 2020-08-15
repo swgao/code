@@ -1,5 +1,7 @@
 package com.gao.blog.web;
 
+import com.gao.blog.dao.CommentRepository;
+import com.gao.blog.pojo.Blog;
 import com.gao.blog.pojo.Comment;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.BlogService;
@@ -19,7 +21,8 @@ public class CommentController {
 
     @Autowired
     CommentService commentService;
-
+    @Autowired
+    CommentRepository commentRepository;
     @Autowired
     BlogService blogService;
 
@@ -34,6 +37,9 @@ public class CommentController {
      */
     @GetMapping("/comments/{blogId}")
     public String comments(@PathVariable Long blogId, Model model){
+        // 返回给请求博客页面的评论个数
+        model.addAttribute("list",commentRepository.findByBlogId(blogId));
+        // 返回给指定区域处理好的评论信息
         model.addAttribute("comments",commentService.listCommentByBlogId(blogId));
         return "blog :: commentList";
     }
@@ -49,12 +55,12 @@ public class CommentController {
         Long blogId = comment.getBlog().getId();
         comment.setBlog(blogService.getBlog(blogId));
         User user = (User) session.getAttribute("user");
-        if (user != null){
-            comment.setAvatar(user.getAvatar());
-            System.out.println(user.getAvatar());
+        comment.setAvatar(user.getAvatar());
+        comment.setUser_id(user);
+        System.out.println(user.getAvatar());
+        Blog blog = blogService.getBlog(blogId);
+        if ((blog.getUser().getId()).equals(user.getId())){
             comment.setAdminComment(true);
-        }else{
-            comment.setAvatar(avatar);
         }
         commentService.saveComment(comment);
         return "redirect:/comments/"+blogId;

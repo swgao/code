@@ -154,7 +154,7 @@ public class BlogController {
     @GetMapping("/blogs/{id}/delete")
     public String delete(RedirectAttributes attributes,@PathVariable("id") Long id){
         blogService.deleteBlog(id);
-        return REDIRECT_LIST;
+        return "redirect:/home/index";
     }
 
 }

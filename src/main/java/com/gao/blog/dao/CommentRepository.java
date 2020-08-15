@@ -12,6 +12,18 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-
+   /**
+    * 根据id并且是第一层评论
+    * @param blogId
+    * @param sort
+    * @return
+    */
    List<Comment> findByBlogIdAndParentCommentNull(Long blogId, Sort sort);
+
+   /**
+    * 根据博客id查询博客的全部评论
+    * @param blogId
+    * @return
+    */
+   List<Comment> findByBlogId(Long blogId);
 }

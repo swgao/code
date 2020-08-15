@@ -19,10 +19,11 @@ public class Comment {
     @Id
     @GeneratedValue
     private Long id;
-    private String nickname;
-    private String email;
     private String content;
     private String avatar;
+    @ManyToOne
+    @JoinColumn(name = "comment_by_id")
+    private User user_id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @ManyToOne

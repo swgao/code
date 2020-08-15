@@ -4,6 +4,7 @@ import com.gao.blog.NotFoundException;
 import com.gao.blog.dao.BlogRepository;
 import com.gao.blog.pojo.Blog;
 import com.gao.blog.pojo.Type;
+import com.gao.blog.pojo.User;
 import com.gao.blog.vo.BlogQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.*;
 import java.util.*;
 
@@ -119,7 +123,7 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public Page<Blog> listBlog(Pageable pageable) {
-        return blogRepository.findAll(pageable);
+        return blogRepository.test(pageable);
     }
 
     @Override

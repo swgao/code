@@ -20,6 +20,7 @@ public class Blog {
     private String content;
     private String firstPicture;
     private String flag;
+    @Column(columnDefinition="int default 0")
     private Integer views;
     private boolean appreciation;
     private boolean shareStatement;
@@ -36,7 +37,7 @@ public class Blog {
     private List<Tag> tags = new ArrayList<>();
     @ManyToOne
     private User user;
-    @OneToMany(mappedBy = "blog")
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy = "blog")
     private List<Comment> comments = new ArrayList<>();
 
     @Transient
