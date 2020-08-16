@@ -49,19 +49,20 @@
                     </div>
                 </div>
             </div>
-            <div class="ui vertical pointing menu">
-                <a class="teal item active" data-tab="first">Home </a>
-                <a class="teal item" data-tab="second">Messages </a>
-                <a class="teal item" data-tab="third">好友 </a>
-                <a class="teal item" data-tab="four">Home1 </a>
-                <a class="teal item" data-tab="five">Messages </a>
-                <a class="teal item" data-tab="six">好友 </a>
-                <a class="teal item" data-tab="seven">收件箱 <div class="ui teal left pointing label">1</div></a>
+            <div class="ui vertical menu">
+                <a class="teal item active" data-tab="first">动态 </a>
+                <a class="teal item" data-tab="second">我的文章 </a>
+                <a class="teal item" data-tab="third">我的评论 </a>
+                <a class="teal item" data-tab="four">我的喜欢 </a>
+                <a class="teal item" data-tab="five">我的关注 </a>
+                <a class="teal item" data-tab="six">我的粉丝 </a>
+                <a class="bell outline icon teal item" data-tab="seven">通知 <div class="ui teal left pointing label">1</div></a>
             </div>
         </div>
         <div class="twelve wide  tab column segment">
-            <div class="ui attached tab segment active" data-tab="first">
-                <div id="table-container">
+            <div class="ui attached tab segment active" data-tab="second">
+                <div th:text="${page.totalElements==0}?'此人很懒，什么都还没有发布'"></div>
+                <div id="table-container" th:if="${page.totalElements>0}">
                     <table th:fragment="blogList" class="ui compact teal table">
                         <thead>
                         <tr>
@@ -110,9 +111,33 @@
             </div>
             <div class="ui attached tab segment" data-tab="second">
             </div>
-            <div class="ui attached tab segment" data-tab="third">Third </div>
+            <div class="ui attached tab segment" data-tab="first">Third </div>
             <div class="ui attached tab segment" data-tab="four">Third </div>
-            <div class="ui attached tab segment" data-tab="five">Third </div>
+            <div class="ui attached tab segment" data-tab="five">
+                <div class="ui special cards">
+                    <div class="card" th:each="follow:${follows.content}" style="width: 150px;height: 281px">
+                        <div class="blurring dimmable image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <a href="" class="ui inverted button">取消关注</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <img th:src="${follow.target.avatar}">
+                        </div>
+                        <div class="content">
+                            <a class="header" th:text="${follow.target.nickname}">Team Fu</a>
+                            <div class="meta">
+                                <span class="date">Created in Sep 2014</span>
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a><i class="users icon"></i> 2 Members </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="ui attached tab segment" data-tab="six">Third </div>
             <div class="ui attached tab segment" data-tab="seven">Third </div>
         </div>
@@ -138,6 +163,9 @@
     $(".message .close").on('click',function () {
         $(this).closest(".message").transition('fade');
     })
+    $('.special.cards .image').dimmer({
+        on: 'hover'
+    });
 </script>
 </body>
 </html>

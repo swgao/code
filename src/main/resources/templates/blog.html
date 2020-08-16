@@ -26,6 +26,9 @@
                 <div class="item">
                     <i class="eye icon"></i><span th:text="${blog.views}">50</span>
                 </div>
+                <div class="item">
+                    <i class="heart outline icon"></i><span th:text="${xihuan}">50</span>
+                </div>
             </div>
         </div>
         <!--图片区域-->
@@ -35,7 +38,10 @@
         <!--内容-->
         <div class="ui attached padded segment">
             <div class="ui right aligned basic segment">
-                <div class="ui orange basic label" th:text="${blog.flag}">原创</div>
+                <div class="ui orange basic label" th:if="${session.user}!=null">
+                <a th:href="@{/home/like/{id}(id=${blog.id})}" th:text="${favor.if_like}?'已喜欢':'喜欢'" class="ui teal">喜欢</a>
+                </div>
+                <div class="ui orange basic label"  th:text="${blog.flag}">原创</div>
             </div>
             <!--标题-->
             <h2 class="ui center aligned header" th:text="${blog.title}">生命的意义与价值</h2>

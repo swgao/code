@@ -29,4 +29,13 @@ public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificati
     List<String> findGroupYear();
     @Query("select b from Blog b where function('date_format',b.updateTime,'%Y') = ?1")
     List<Blog> findByYear(String year);
+
+    /**
+     * 根据userid查询全部博客
+     * @param userId
+     * @param pageable
+     * @return
+     */
+    @Query("from Blog a where a.user.id=?1")
+    Page<Blog> tt(long userId,Pageable pageable);
 }

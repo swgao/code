@@ -1,11 +1,9 @@
 package com.gao.blog.web.home;
 
+import com.gao.blog.dao.FavorReponsitory;
 import com.gao.blog.dao.UserRepository;
 import com.gao.blog.pojo.User;
-import com.gao.blog.service.BlogService;
-import com.gao.blog.service.TagService;
-import com.gao.blog.service.TypeService;
-import com.gao.blog.service.UserService;
+import com.gao.blog.service.*;
 import com.gao.blog.vo.BlogQuery;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,7 +39,11 @@ public class HomeController {
     @Autowired
     UserService userService;
     @Autowired
+    FavorReponsitory favorReponsitory;
+    @Autowired
     UserRepository userRepository;
+    @Autowired
+    HomeService homeService;
     @Value("${STORE_ROOT_PATH}")
     String StoreRootPath; // 寻存储根目录
 
@@ -51,7 +54,7 @@ public class HomeController {
      * @return
      */
     @RequestMapping({"/index","","/"})
-    public String index(Model model, @PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,HttpSession session){
+    public String index(@RequestParam(defaultValue = "1") Integer pages,Model model, @PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable, HttpSession session){
 //        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //        HttpSession session = request.getSession();
 //        User user = (User) session.getAttribute("user");
@@ -59,7 +62,9 @@ public class HomeController {
         // 获取用户
         User user1 = userRepository.getOne(user.getId());
         model.addAttribute("page",blogService.homeBlog(pageable,user1.getId()));
-        model.addAttribute("types",typeService.listType());
+//        model.addAttribute("types",typeService.listType());
+        // 我的关注
+        homeService.follows(pages,model);
         return "home/index";
     }
 
@@ -160,5 +165,17 @@ public class HomeController {
     @GetMapping("/email")
     public String email(){
         return "home/email";
+    }
+
+    /**
+     * 点击喜欢处理
+     * @param id
+     * @param session
+     * @return
+     */
+    @RequestMapping("/like/{id}")
+    public String like(@PathVariable Long id,HttpSession session){
+        userService.saveFavor(id,session);
+        return "redirect:/blog/"+id;
     }
 }

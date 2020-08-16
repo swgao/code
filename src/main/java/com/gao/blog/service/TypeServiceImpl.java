@@ -17,7 +17,8 @@ import java.util.List;
 
 
 @Service
-public class TypeServiceImpl implements TypeService{
+public class
+TypeServiceImpl implements TypeService{
 
     @Autowired
     private TypeRepository typeRepository;

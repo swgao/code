@@ -1,0 +1,124 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${user.getNickname()}">东方不败 的Mtons</title>
+<script th:src="@{/lib/pace/pace.min.js}"></script>
+<link th:href="@{/lib/pace/themes/pace-theme-minimal.css}" rel="stylesheet" />
+<link rel='stylesheet' th:href="@{/lib/font-awesome/css/font-awesome.min.css}"/>
+<link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/lib/animate/animate.min.css}">
+<link rel='stylesheet' th:href='@{/css/style.css}'/>
+<link rel='stylesheet' th:href='@{/css/layout.css}'/>
+<link rel='stylesheet' th:href='@{/css/plugins.css}'/>
+<link rel='stylesheet' th:href='@{/css/addons.css|}'/>
+<link rel='stylesheet' th:href="@{/lib/baguette/baguetteBox.min.css}"/>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/utils.js}"></script>
+<script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/sea.js}"></script>
+<script type="text/javascript" th:src="@{/js/sea.config.js}"></script>
+
+<script type="text/javascript">
+    var _base_path = '$!{base}';
+
+    window.app = {
+        base: '',
+        LOGIN_TOKEN: '$!{profile.id}'
+    };
+</script>
+</head>
+<body>
+
+<!-- Header END -->
+	<!--.site-main -->
+	<div class="wrap">
+		<div class="profile">
+			<div class="container">
+				<div class="avatar animated fadeInDown">
+    <img class="img-circle" th:src="${user.avatar}"/>
+				</div>
+				<h1 th:text="${user.getNickname()}">东方不败</h1>
+
+				<h2 th:text="${user.sign!=null?user.sign:'未设置个性签名'}">日出东方，唯我不败，文成武德，天下第一，千秋万载，一统江湖。</h2>
+				<a class="btn btn-white" href="javascript:void(0);" th:data-id="${user.id}" rel="follow">+ 关注</a>
+			</div>
+		</div>
+
+		<nav id="profile-navigation" class="profile-navbar">
+			<div class="container">
+				<div class="content">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a href="javascript:void(0);)">TA的文章</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+			<div class="row">
+				<div class="main clearfix">
+					<div class="col-xs-12 col-md-12">
+						<div class="shadow-box mt20">
+							<div class="stream-list" th:each="blog : ${page.content}">
+								<div class="stream-item" id="loop-18">
+									<div class="blog-rank">
+										<div class="votes #if(1 > 0) plus #end">
+											1<small>喜欢</small>
+										</div>
+										<div class="views hidden-xs">
+											0<small>评论</small>
+										</div>
+									</div>
+									<div class="summary">
+										<h2 class="title"><a href="/view/18" th:text="${blog.title}">XML 和 Json 的特点</a></h2>
+
+										<div class="excerpt wordbreak hidden-xs" th:text="${blog.content}">Xml 特点：&nbsp; 1、有且仅有一个根节点； 2、是独立与软件和硬件的信息传输工具（传输量较大）&nbsp; 3、所有的标签都需要自定义&nbsp; 4、仅仅是纯文本文件 Json（JavaScript Object Notation）特... &nbsp;</div>
+
+										<!--前端图片显示样式-->
+
+										<div class="foot-block clearfix">
+											<div class="author">
+												<time>1小时前</time>
+											</div>
+											<ul class="tags">
+											</ul>
+											<div class="pull-right hidden-xs">
+												<span class="act">浏览 (<i>0</i>)</span>
+												<span class="act">喜欢 (<i>1</i>)</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="text-center clr">
+
+<ul class="pagination">
+
+    <li class="active"><a href="javascript:void(0);"><span>1</span></a></li>
+
+</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<a href="#" class="site-scroll-top"></a>
+
+<script type="text/javascript">
+    seajs.use('main', function (main) {
+        main.init();
+    });
+</script></body>
+</html>

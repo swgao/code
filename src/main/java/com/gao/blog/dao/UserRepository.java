@@ -1,6 +1,7 @@
 package com.gao.blog.dao;
 
 import com.gao.blog.pojo.User;
+import com.gao.blog.vo.Result;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -14,5 +15,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByEmail(String email);
 
     User findByPhone(String phone);
+
 
 }

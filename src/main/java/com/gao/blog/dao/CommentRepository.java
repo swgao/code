@@ -26,4 +26,12 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     * @return
     */
    List<Comment> findByBlogId(Long blogId);
+
+   /**
+    * 根据博客id查询评论数量
+    * @param blogId
+    * @return
+    */
+   @Query("select count(*) from Comment c where c.blog.id=?1")
+   int countByBlogId(Long blogId);
 }

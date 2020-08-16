@@ -130,11 +130,15 @@ define(function(require, exports, module) {
 			}
 
 			if (parseInt(id) > 0) {
-				jQuery.getJSON(app.base +'/account/follow', {'id': id}, function (ret) {
-					if (ret.code >=0) {
-						that.text("已关注");
-					} else {
-						layer.msg(ret.message, {icon: 2});
+				jQuery.post(app.base +'/follow', {'id': id}, function (ret) {
+					if (ret.code == 0) {
+						layer.msg("未登录",function () {});
+					}
+					if (ret.code == 1) {
+						that.text("已关注").css('border-color','green');
+					}
+					if (ret.code == 3) {
+
 					}
 				});
 			}
@@ -145,9 +149,9 @@ define(function(require, exports, module) {
 			var id = that.attr('data-id');
 
 			if (parseInt(id) > 0) {
-				jQuery.getJSON(app.base +'/account/check_follow', {'id': id}, function (ret) {
-					if (ret.code >=0 && ret.data) {
-						that.text("已关注");
+				jQuery.post(app.base +'/follow/check/'+id, {}, function (ret) {
+					if (ret.code == 2) {
+						that.text("已关注").css('border-color','green').off('click');
 					}
 				});
 			}
