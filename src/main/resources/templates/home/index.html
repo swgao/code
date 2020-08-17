@@ -33,6 +33,8 @@
 
 <body>
 <div class="ui container">
+    <input type="hidden" name="page">
+    <input type="hidden" name="fans">
     <div class="ui grid right"  style="width: 950px;margin-left: 100px" >
         <div class="four wide column">
             <div class="ui middle aligned card">
@@ -109,36 +111,110 @@
 
                 </div>
             </div>
-            <div class="ui attached tab segment" data-tab="second">
+            <div class="ui attached tab segment" data-tab="first">
             </div>
-            <div class="ui attached tab segment" data-tab="first">Third </div>
+            <div class="ui attached tab segment" data-tab="third">Third </div>
             <div class="ui attached tab segment" data-tab="four">Third </div>
             <div class="ui attached tab segment" data-tab="five">
-                <div class="ui special cards">
-                    <div class="card" th:each="follow:${follows.content}" style="width: 150px;height: 281px">
-                        <div class="blurring dimmable image">
-                            <div class="ui dimmer">
-                                <div class="content">
-                                    <div class="center">
-                                        <a href="" class="ui inverted button">取消关注</a>
+                <div id="test">
+                    <div  class="ui special cards" th:fragment="followsList">
+                        <div class="card" th:id="'loop-'+${follow.target.id}" th:each="follow:${follows.content}" style="width: 150px;height: 281px">
+                            <div class="blurring dimmable image">
+                                <div class="ui dimmer">
+                                    <div class="content">
+                                        <div class="center">
+                                            <a href="javascript:void(0);" th:data-id="${follow.target.id}" rel="unfollow" class="ui inverted button">取消关注</a>
+                                        </div>
                                     </div>
                                 </div>
+                                <img th:src="${follow.target.avatar}">
                             </div>
-                            <img th:src="${follow.target.avatar}">
-                        </div>
-                        <div class="content">
-                            <a class="header" th:text="${follow.target.nickname}">Team Fu</a>
-                            <div class="meta">
-                                <span class="date">Created in Sep 2014</span>
+                            <div class="content">
+                                <a class="header" th:text="${follow.target.nickname}">Team Fu</a>
+                                <div class="meta">
+                                    <span class="date">Created in Sep 2014</span>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <a><i class="users icon"></i> 2 Members </a>
                             </div>
                         </div>
-                        <div class="extra content">
-                            <a><i class="users icon"></i> 2 Members </a>
+                        <div style="position: inherit"></div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="ui mini menu" style="position: absolute;bottom: 0" th:if="${follows.totalElements}>1">
+                            <a onclick="follow(this)" th:attr="data-page=${follows.number}-1" th:unless="${follows.first}" class="item">上一页</a>
+                            <a onclick="follow(this)" th:attr="data-page=${follows.number}+1" th:unless="${follows.last}" class="item">下一页</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui attached tab segment" data-tab="six">
+                <div id="fan_test">
+                    <div th:fragment="fansList" class="ui special cards">
+                        <div class="card" th:id="'loop-'+${fan.source.id}" th:each="fan:${fans.content}" style="width: 150px;height: 281px">
+                            <div class="blurring dimmable image">
+                                <div class="ui dimmer">
+                                    <div class="content">
+                                        <div class="center">
+                                            <a th:href="@{/ta/{userId}(userId=${fan.source.id})}" class="ui inverted button">他的主页</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <img th:src="${fan.source.avatar}">
+                            </div>
+                            <div class="content">
+                                <a class="header" th:text="${fan.source.nickname}">Team Fu</a>
+                                <div class="meta">
+                                    <span class="date">Created in Sep 2014</span>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <a><i class="users icon"></i> 2 Members </a>
+                            </div>
+                        </div>
+                        <div style="position: inherit"></div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="ui mini menu" style="position: absolute;bottom: 0" th:if="${fans.totalElements}>1">
+                            <a onclick="fans(this)" th:attr="data-fan_page=${fans.number}-1" th:unless="${fans.first}" class="item">上一页</a>
+                            <a onclick="fans(this)" th:attr="data-fan_page=${fans.number}+1" th:unless="${fans.last}" class="item">下一页</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="ui attached tab segment" data-tab="six">Third </div>
             <div class="ui attached tab segment" data-tab="seven">Third </div>
         </div>
     </div>
@@ -146,6 +222,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
 <script>
     /*侧边列表*/
     $('.menu .item')
@@ -163,9 +240,55 @@
     $(".message .close").on('click',function () {
         $(this).closest(".message").transition('fade');
     })
+    /*放到卡片上显示取消关注*/
     $('.special.cards .image').dimmer({
         on: 'hover'
     });
+    $(function() {
+        $('a[rel=unfollow]').click(function () {
+            var id = $(this).attr('data-id');
+            console.log(11111);
+            layer.confirm('确定取消关注TA吗?', {
+                btn: ['确定','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                jQuery.getJSON('/unfollow',{'id': id},  function (ret) {
+                    layer.msg(ret.msg, {icon: 1});
+                    if (ret.code ==0) {
+                        window.location.href = "/admin/login.html"
+                    }
+                    if (ret.code == 1 ) {
+                        $('#loop-' + id).fadeOut(1000,function () {
+                            $('#loop-' + id).remove();
+                        });
+                    }
+                });
+
+            }, function(){
+
+            });
+        });
+    })
+
+
+    function follow(obj) {
+        $("[name='page']").val($(obj).data('page'));
+        loaddata()
+    }
+    function loaddata() {
+        $("#test").load(/*[[@{/home/follows}]]*/"/home/follows",{
+            page: $("[name='page']").val()
+        });
+    }
+    function fans(obj) {
+        $("[name='fans']").val($(obj).data('fan_page'));
+        fan_loaddata()
+    }
+    function fan_loaddata() {
+        $("#fan_test").load(/*[[@{/home/fans}]]*/"/home/fans",{
+            page: $("[name='fans']").val()
+        });
+    }
 </script>
 </body>
 </html>

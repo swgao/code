@@ -8,6 +8,7 @@ import com.gao.blog.vo.BlogQuery;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -54,18 +55,44 @@ public class HomeController {
      * @return
      */
     @RequestMapping({"/index","","/"})
-    public String index(@RequestParam(defaultValue = "1") Integer pages,Model model, @PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable, HttpSession session){
-//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
+    public String index(@RequestParam(defaultValue = "1") Integer pagess,Model model, @PageableDefault(size = 4,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable, HttpSession session){
+
         User user = (User) session.getAttribute("user");
         // 获取用户
         User user1 = userRepository.getOne(user.getId());
         model.addAttribute("page",blogService.homeBlog(pageable,user1.getId()));
 //        model.addAttribute("types",typeService.listType());
         // 我的关注
-        homeService.follows(pages,model);
+        model.addAttribute("follows",homeService.follows(pageable));
+        // 我的粉丝
+        model.addAttribute("fans",homeService.fans(pageable));
         return "home/index";
+    }
+
+    /**
+     * 动态加载我的关注 分页
+     * @param pageable
+     * @param model
+     * @return
+     */
+    @RequestMapping("/follows")
+    public String follows( @PageableDefault(size = 4,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        // 我的关注
+        model.addAttribute("follows",homeService.follows(pageable));
+        return "home/index :: followsList";
+    }
+
+    /**
+     * 动态加载 我的粉丝分页
+     * @param pageable
+     * @param model
+     * @return
+     */
+    @RequestMapping("/fans")
+    public String fans( @PageableDefault(size = 4,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        // 我的粉丝
+        model.addAttribute("fans",homeService.fans(pageable));
+        return "home/index :: fansList";
     }
 
     /**

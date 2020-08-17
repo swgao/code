@@ -38,4 +38,13 @@ public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificati
      */
     @Query("from Blog a where a.user.id=?1")
     Page<Blog> tt(long userId,Pageable pageable);
+
+    /**
+     * 根据typeId查询blog
+     * @param id
+     * @param pageable
+     * @return
+     */
+    @Query("from Blog b where b.type.id=?1")
+    Page<Blog> userListType(long id,Pageable pageable);
 }

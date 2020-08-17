@@ -27,7 +27,8 @@ public class BlogServiceImpl implements BlogService{
 
     @Autowired
     BlogRepository blogRepository;
-
+    public static long id;
+    public static long typeId;
     /**
      * 根据id获取博客
      * @param id
@@ -47,7 +48,6 @@ public class BlogServiceImpl implements BlogService{
      */
     @Override
     public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
-
         return blogRepository.findAll(new Specification<Blog>() {
             @Override
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
@@ -67,8 +67,25 @@ public class BlogServiceImpl implements BlogService{
         },pageable);
     }
 
+    /**
+     * type页面分页用的
+     * @param pageable
+     * @return
+     */
+    @Override
+    public Page<Blog> listBlogTypeId(Pageable pageable) {
+        return listBlog(typeId,pageable);
+    }
+
+    /**
+     * tag分页查询
+     * @param pageable
+     * @param tagId
+     * @return
+     */
     @Override
     public Page<Blog> listBlog(Pageable pageable, Long tagId) {
+        id =  tagId;
         return blogRepository.findAll(new Specification<Blog>() {
             @Override
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
@@ -77,6 +94,29 @@ public class BlogServiceImpl implements BlogService{
             }
         },pageable);
     }
+
+    /**
+     * type页面数据
+     * @param typesId
+     * @param pageable
+     * @return
+     */
+    @Override
+    public Page<Blog> listBlog(Long typesId, Pageable pageable) {
+        typeId =  typesId;
+        return blogRepository.userListType(typesId,pageable);
+    }
+
+    /**
+     * tag页面分页用的
+     * @param pageable
+     * @return
+     */
+    @Override
+    public Page<Blog> listBlogTagId(Pageable pageable) {
+        return listBlog(pageable,id);
+    }
+
 
     /**
      * 保存博客
@@ -131,6 +171,12 @@ public class BlogServiceImpl implements BlogService{
         return blogRepository.findByQuery(query,pageable);
     }
 
+    /**
+     * 根据userId查询blog分页数据
+     * @param pageable
+     * @param userId
+     * @return
+     */
     @Override
     public Page<Blog> homeBlog(Pageable pageable, Long userId) {
         return blogRepository.findAll(new Specification<Blog>() {
@@ -142,6 +188,11 @@ public class BlogServiceImpl implements BlogService{
         },pageable);
     }
 
+    /**
+     * 查询最新推荐数据
+     * @param size
+     * @return
+     */
     @Override
     public List<Blog> listRecommendBlogTop(Integer size) {
         Sort sort = Sort.by(Sort.Direction.DESC,"updateTime");
@@ -150,6 +201,10 @@ public class BlogServiceImpl implements BlogService{
 
     }
 
+    /**
+     * 查询没年的blog
+     * @return
+     */
     @Override
     public Map<String, List<Blog>> archiveBlog() {
         List<String> years = blogRepository.findGroupYear();
@@ -160,6 +215,10 @@ public class BlogServiceImpl implements BlogService{
         return map;
     }
 
+    /**
+     * 查询blog总数
+     * @return
+     */
     @Override
     public Long countBlog() {
         return blogRepository.count();

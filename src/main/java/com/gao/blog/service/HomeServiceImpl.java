@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -24,15 +25,28 @@ public class HomeServiceImpl implements HomeService{
     /**
      * 我的关注数据查询
      * @param page
-     * @param model
      */
     @Override
-    public void follows(Integer page, Model model) {
+    public Page<Follow> follows(Pageable page) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        Pageable pageable = PageRequest.of(page-1,20);
-        Page<Follow> follows = followsRepository.findFollows(user.getId(), pageable);
-        model.addAttribute("follows",follows);
+        Page<Follow> follows = followsRepository.findFollows(user.getId(), page);
+        return follows;
+    }
+
+    /**
+     * 我的粉丝 数据查询
+     * @param page
+     * @return
+     */
+    @Override
+    public Page<Follow> fans(Pageable page) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        Page<Follow> fans = followsRepository.findFans(user.getId(), page);
+        return fans;
+
     }
 }

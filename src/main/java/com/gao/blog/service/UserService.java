@@ -51,4 +51,11 @@ public interface UserService {
      * @return
      */
     Result followCheck(long userId);
+
+    /**
+     * 取消关注某个人
+     * @param id
+     * @return
+     */
+    Result unFollow(long id);
 }

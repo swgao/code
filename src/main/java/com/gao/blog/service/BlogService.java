@@ -24,9 +24,51 @@ public interface BlogService {
      * @return
      */
     Page<Blog> listBlog(Pageable pageable, BlogQuery blog);
+
+    /**
+     * 根据typeId查询分页数据
+     * @param typesId
+     * @param pageable
+     * @return
+     */
+    Page<Blog> listBlog(Long typesId,Pageable pageable);
+
+    /**
+     * 根据typeId的数据进行分页跳转
+     * @param pageable
+     * @return
+     */
+    Page<Blog> listBlogTypeId(Pageable pageable);
+
+    /**
+     * 根据tagId查询分页数据
+     * @param pageable
+     * @param tagId
+     * @return
+     */
     Page<Blog> listBlog(Pageable pageable,Long tagId);
+
+    /**
+     * 根据tagId的数据进行分页跳转
+     * @param pageable
+     * @return
+     */
+    Page<Blog> listBlogTagId(Pageable pageable);
+
+    /**
+     * 主页的blog分页
+     * @param pageable
+     * @return
+     */
     Page<Blog> listBlog(Pageable pageable);
     Page<Blog> listBlog(Pageable pageable,String query);
+
+    /**
+     * 根据userId查询blog
+     * @param pageable
+     * @param userId
+     * @return
+     */
     Page<Blog> homeBlog(Pageable pageable,Long userId);
     /**
      * 保存博客
@@ -49,10 +91,14 @@ public interface BlogService {
      */
     void deleteBlog(Long id);
 
-
     List<Blog> listRecommendBlogTop(Integer size);
 
     Map<String,List<Blog>> archiveBlog();
+
+    /**
+     * blog总数
+     * @return
+     */
     Long countBlog();
 
 

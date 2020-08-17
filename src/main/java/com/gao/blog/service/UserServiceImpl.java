@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService{
     private FavorReponsitory favorReponsitory;
     @Autowired
     private FollowsRepository followsRepository;
+
     /**
      * 用户检查业务实现
      * @param username
@@ -41,6 +42,16 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * 获取用户登录
+     * @return
+     */
+    public User loginUser(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        return user;
+    }
+    /**
      * 修改密码业务实现
      * @param oldPassword
      * @param password
@@ -49,9 +60,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public Result updatePasswrod(String oldPassword, String password) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = loginUser();
         // 获取用户
         User user1 = userRepository.getOne(user.getId());
         String salt = user1.getSalt();
@@ -129,9 +138,7 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public Result saveFollow(long userId) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = loginUser();
         if (user==null){
             return Result.of(0,"未登录");
         }
@@ -148,11 +155,14 @@ public class UserServiceImpl implements UserService{
         return Result.of(1,"关注成功");
     }
 
+    /**
+     * 当前登录用户检查是否关注了某个人
+     * @param userId
+     * @return
+     */
     @Override
     public Result followCheck(long userId) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = loginUser();
         if (user==null){
             return Result.of(0,"未登录");
         }
@@ -161,6 +171,23 @@ public class UserServiceImpl implements UserService{
             return Result.of(1,"未关注");
         }
         return Result.of(2,"已关注");
+    }
+
+    /**
+     * 取消关注某个人
+     * @param id
+     * @return
+     */
+    @Transactional
+    @Override
+    public Result unFollow(long id) {
+        User user = loginUser();
+        if (user==null){
+            return Result.of(0,"未登录");
+        }
+        Follow follow = followsRepository.find(user.getId(),id);
+        followsRepository.delete(follow);
+        return Result.of(1,"取消关注成功");
     }
 
 

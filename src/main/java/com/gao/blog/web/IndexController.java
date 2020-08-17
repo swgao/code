@@ -28,8 +28,6 @@ import java.util.List;
 @Controller
 public class IndexController {
     @Autowired
-    UserService userService;
-    @Autowired
     BlogService blogService;
     @Autowired
     TypeService typeService;
@@ -140,25 +138,4 @@ public class IndexController {
         return "_fragments :: newblogList";
     }
 
-    /**
-     * 关注某个人，要求已登录
-     * @param id
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/follow")
-    public Object follow(long id){
-        return userService.saveFollow(id);
-    }
-
-    /**
-     * 检查是否关注了某个人，要求已登录
-     * @param userId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/follow/check/{userId}")
-    public Object followCheck(@PathVariable long userId){
-        return userService.followCheck(userId);
-    }
 }

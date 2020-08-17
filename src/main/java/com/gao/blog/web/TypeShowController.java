@@ -25,7 +25,7 @@ import java.util.List;
 
 @Controller
 public class TypeShowController {
-
+    static long tid;
     @Autowired
     TypeService typeService;
     @Autowired
@@ -43,39 +43,32 @@ public class TypeShowController {
      * @return
      */
     @GetMapping("/types/{id}")
-    public String types(@PathVariable Long id, Model model, @PageableDefault(size = 5,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
+    public String types(@PathVariable Long id, Model model, @PageableDefault(size = 2,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
         List<Type> types = typeService.listTypeTop(10000);
         if (id == -1){
             id = types.get(0).getId();
         }
+        tid = id;
         BlogQuery blogQuery = new BlogQuery();
         blogQuery.setTypeId(id);
         model.addAttribute("types",types);
-        model.addAttribute("page",blogService.listBlog(pageable,blogQuery));
+        model.addAttribute("page",blogService.listBlog(id,pageable));
         model.addAttribute("activeTypeId",id);
-        // 拿到博客
-        Page<Blog> blogs = blogService.listBlog(pageable,blogQuery);
-        List<Blog> lists =new ArrayList();
-        // 遍历
-        for (int i = 0;i < blogs.getContent().size();i++) {
-            // 拿到循环的单个博客
-            Blog a = blogs.getContent().get(i);
-            // 根据单个博客id进行查找
-            int count = commentRepository.countByBlogId(a.getId());
-            // 新建BlogVO
-            BlogVO v = new BlogVO();
-            // 把评论数f赋值
-            v.setPinglun(count);
-            // 然后把a拷贝到v
-            BeanUtils.copyProperties(a,v);
-            //添加到列表
-            lists.add(v);
-            // 查询喜欢的个数
-            int favorCount = favorReponsitory.countByBlog(a.getId());
-            v.setXihuan(favorCount);
-            System.out.println(count);
-        }
-        model.addAttribute("pages",lists);
+        return "types";
+    }
+
+    /**
+     * types页面分页用的
+     * @param model
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/typess")
+    public String type(Model model, @PageableDefault(size = 2,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
+        List<Type> types = typeService.listTypeTop(10000);
+        model.addAttribute("types",types);
+        model.addAttribute("page",blogService.listBlogTypeId(pageable));
+        model.addAttribute("activeTypeId",tid);
         return "types";
     }
 }
