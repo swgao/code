@@ -23,6 +23,6 @@ public class Favor {
     @JoinColumn(name = "blog_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Blog blog;
-    private Date creteTime;
+    private Date createTime;
     private boolean if_like;
 }

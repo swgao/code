@@ -4,21 +4,17 @@ import com.gao.blog.dao.FavorReponsitory;
 import com.gao.blog.dao.UserRepository;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.*;
-import com.gao.blog.vo.BlogQuery;
+
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -55,7 +51,7 @@ public class HomeController {
      * @return
      */
     @RequestMapping({"/index","","/"})
-    public String index(@RequestParam(defaultValue = "1") Integer pagess,Model model, @PageableDefault(size = 4,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable, HttpSession session){
+    public String index(Model model, @PageableDefault(size = 4,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable, HttpSession session){
 
         User user = (User) session.getAttribute("user");
         // 获取用户
@@ -66,6 +62,10 @@ public class HomeController {
         model.addAttribute("follows",homeService.follows(pageable));
         // 我的粉丝
         model.addAttribute("fans",homeService.fans(pageable));
+        // 通知
+        model.addAttribute("data",homeService.notifies(pageable));
+        // 我的喜欢
+        model.addAttribute("love",favorReponsitory.findByBlog(user.getId(),pageable));
         return "home/index";
     }
 
@@ -93,6 +93,19 @@ public class HomeController {
         // 我的粉丝
         model.addAttribute("fans",homeService.fans(pageable));
         return "home/index :: fansList";
+    }
+
+    /**
+     * 我的通知 分页
+     * @param pageable
+     * @param model
+     * @return
+     */
+    @RequestMapping("/datas")
+    public String datas( @PageableDefault(size = 4,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        // 通知
+        model.addAttribute("data",homeService.notifies(pageable));
+        return "home/index :: datasList";
     }
 
     /**

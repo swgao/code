@@ -114,10 +114,20 @@
             <div class="ui attached tab segment" data-tab="first">
             </div>
             <div class="ui attached tab segment" data-tab="third">Third </div>
-            <div class="ui attached tab segment" data-tab="four">Third </div>
+            <div class="ui attached tab segment" data-tab="four">
+                <div class="ui relaxed list">
+                    <div class="item" th:each="xi:${love}">
+                        <img class="ui image avatar"th:src="${xi.blog.getFirstPicture()}">
+                        <div class="content">
+                            <a  th:href="@{blog/{id}(id=${xi.blog.id})}" class="header" th:text="${xi.blog.title}">丹尼尔 路易斯</a>
+                            <div class="description"><span th:text="${#dates.format(xi.createTime,'yyyy-MM-dd HH:mm')}"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="ui attached tab segment" data-tab="five">
                 <div id="test">
-                    <div  class="ui special cards" th:fragment="followsList">
+                    <div class="ui special cards" th:fragment="followsList">
                         <div class="card" th:id="'loop-'+${follow.target.id}" th:each="follow:${follows.content}" style="width: 150px;height: 281px">
                             <div class="blurring dimmable image">
                                 <div class="ui dimmer">
@@ -138,6 +148,12 @@
                             <div class="extra content">
                                 <a><i class="users icon"></i> 2 Members </a>
                             </div>
+                            <script>
+                                /*放到卡片上显示取消关注*/
+                                $('.special.cards .image').dimmer({
+                                    on: 'hover'
+                                });
+                            </script>
                         </div>
                         <div style="position: inherit"></div>
                         <br>
@@ -161,10 +177,8 @@
                             <a onclick="follow(this)" th:attr="data-page=${follows.number}-1" th:unless="${follows.first}" class="item">上一页</a>
                             <a onclick="follow(this)" th:attr="data-page=${follows.number}+1" th:unless="${follows.last}" class="item">下一页</a>
                         </div>
-
                     </div>
                 </div>
-
             </div>
             <div class="ui attached tab segment" data-tab="six">
                 <div id="fan_test">
@@ -189,6 +203,12 @@
                             <div class="extra content">
                                 <a><i class="users icon"></i> 2 Members </a>
                             </div>
+                            <script>
+                                /*放到卡片上显示取消关注*/
+                                $('.special.cards .image').dimmer({
+                                    on: 'hover'
+                                });
+                            </script>
                         </div>
                         <div style="position: inherit"></div>
                         <br>
@@ -215,7 +235,29 @@
                     </div>
                 </div>
             </div>
-            <div class="ui attached tab segment" data-tab="seven">Third </div>
+            <div class="ui attached tab segment" data-tab="seven">
+                <div class="stream-item" id="loop-3" th:each="notify:${data}">
+                    <div class="blog-rank">
+                        <div class="user" th:title="${notify.title}">
+                            <a th:href="${notify.url}">
+                                <img class="img-circle" th:src="${notify.avatar}"/>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="summary">
+                        <h2 class="title" th:text="${notify.title}">一个怀疑人生的家伙</h2>
+                        <div class="excerpt wordbreak">
+                            <span th:utext="${notify.content}"></span>
+                        </div>
+                        </h2>
+                        <div class="foot-block clearfix">
+                            <div class="author">
+                               <span th:text="${#dates.format(notify.createTime,'yyyy-MM-dd hh:mm:ss')}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -290,5 +332,6 @@
         });
     }
 </script>
+<link rel='stylesheet' th:href='@{/css/style.css}'/>
 </body>
 </html>

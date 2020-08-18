@@ -38,8 +38,13 @@
         <!--内容-->
         <div class="ui attached padded segment">
             <div class="ui right aligned basic segment">
-                <div class="ui orange basic label" th:if="${session.user}!=null">
-                <a th:href="@{/home/like/{id}(id=${blog.id})}" th:text="${favor.if_like}?'已喜欢':'喜欢'" class="ui teal">喜欢</a>
+                <div class="ui basic orange label" th:if="${session.user}!=null">
+                    <div class="ui orange" th:if="${favor_null}==1">
+                        <a  th:href="@{/home/like/{id}(id=${blog.id})}"  class="ui teal">喜欢</a>
+                    </div>
+                    <div class="ui orange" th:if="${favor_null}==2">
+                        <a  th:href="@{/home/like/{id}(id=${blog.id})}" th:text="${favor.isIf_like()}?'已喜欢':'喜欢'" style="color: red" class="ui teal">喜欢</a>
+                    </div>
                 </div>
                 <div class="ui orange basic label"  th:text="${blog.flag}">原创</div>
             </div>

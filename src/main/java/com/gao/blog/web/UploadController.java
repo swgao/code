@@ -1,14 +1,17 @@
 package com.gao.blog.web;
 
 
+import com.gao.blog.dto.FileDTO;
 import com.gao.blog.util.FileDownload;
 import com.gao.blog.vo.Result;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.*;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -89,7 +94,6 @@ public class UploadController {
         }
         return "";
     }
-
     /**
      * 访问图图片处理
      * @param request
@@ -99,7 +103,6 @@ public class UploadController {
     @ResponseBody
     @RequestMapping("/store/avatar/**")
     public Object avatar(HttpServletRequest request, HttpServletResponse response){
-        System.out.println(request.getServletPath());
         File file = new File(StoreRootPath,request.getServletPath());
         try {
             FileDownload.forward(request,response,file);
@@ -108,4 +111,59 @@ public class UploadController {
         }
         return "访问图片";
     }
+
+    /**
+     * 处理博客添加的图片路径
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/store/blogImage/**")
+    public Object test(HttpServletRequest request, HttpServletResponse response){
+        System.out.println(request.getServletPath());
+
+        File file = new File(StoreRootPath,request.getServletPath());
+        try {
+            FileDownload.forward(request,response,file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "访问图片";
+    }
+
+    /**
+     * 保存博客添加的图片
+     * @param file
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @ResponseBody
+    @RequestMapping("/file/upload")
+    public FileDTO blogupload(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        Date date = new Date();
+        String filename = "/store/blogImage/"
+                +new SimpleDateFormat("yyyy").format(date)+"/"
+                +new SimpleDateFormat("MM").format(date)+"/"
+                +new SimpleDateFormat("dd").format(date)+"/"
+                + UUID.randomUUID().toString()+".jpg";
+        File local = new File(StoreRootPath,filename);
+        File dir = local.getParentFile();
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File tempFile = new File(StoreRootPath,filename);
+        Thumbnails.of(file.getInputStream()).
+                size(500,510).
+                outputFormat("jpg").
+                toFile(tempFile);
+        System.out.println(tempFile);
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setSuccess(1);
+        fileDTO.setUrl(filename);
+        return fileDTO;
+    }
 }
+

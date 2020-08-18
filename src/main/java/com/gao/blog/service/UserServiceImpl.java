@@ -2,11 +2,9 @@ package com.gao.blog.service;
 
 import com.gao.blog.dao.FavorReponsitory;
 import com.gao.blog.dao.FollowsRepository;
+import com.gao.blog.dao.NotifyRepository;
 import com.gao.blog.dao.UserRepository;
-import com.gao.blog.pojo.Blog;
-import com.gao.blog.pojo.Favor;
-import com.gao.blog.pojo.Follow;
-import com.gao.blog.pojo.User;
+import com.gao.blog.pojo.*;
 import com.gao.blog.util.DigestHelper;
 import com.gao.blog.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,8 @@ public class UserServiceImpl implements UserService{
     private FavorReponsitory favorReponsitory;
     @Autowired
     private FollowsRepository followsRepository;
+    @Autowired
+    private NotifyRepository notifyRepository;
 
     /**
      * 用户检查业务实现
@@ -117,13 +117,12 @@ public class UserServiceImpl implements UserService{
                 one.setIf_like(true);
             }
             favorReponsitory.save(one);
-            System.out.println(111);
         }else{
             Favor favor = new Favor();
             Blog blog = new Blog();
             blog.setId(blogId);
             favor.setBlog(blog);
-            favor.setCreteTime(new Date());
+            favor.setCreateTime(new Date());
             favor.setUser(user1);
             favor.setIf_like(true);
             favorReponsitory.save(favor);
@@ -152,6 +151,15 @@ public class UserServiceImpl implements UserService{
         target.setId(userId);
         follows.setTarget(target);
         followsRepository.save(follows);
+        // 给被关注作者发通知
+        Notify notify = new Notify();
+        notify.setAvatar(user.getAvatar());
+        notify.setCreateTime(new Date());
+        notify.setTitle(user.getNickname());
+        notify.setUser(target);
+        notify.setUrl("/ta/"+user.getId());
+        notify.setContent("关注了你,你的粉丝+1");
+        notifyRepository.save(notify);
         return Result.of(1,"关注成功");
     }
 

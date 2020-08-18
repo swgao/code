@@ -95,7 +95,12 @@ public class IndexController {
             model.addAttribute("ids",1);
             // 如果有用户，就查出用户是否喜欢该帖子
             User user1 = userRepository.getOne(user.getId());
-            model.addAttribute("favor",favorReponsitory.find(user1.getId(),id));
+            if (favorReponsitory.find(user1.getId(),id)==null){
+                model.addAttribute("favor_null",1);
+            }else{
+                model.addAttribute("favor_null",2);
+                model.addAttribute("favor",favorReponsitory.find(user1.getId(),id));
+            }
         }else{
             model.addAttribute("ids",2);
         }

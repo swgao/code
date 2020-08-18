@@ -67,18 +67,18 @@
 				<div class="main clearfix">
 					<div class="col-xs-12 col-md-12">
 						<div class="shadow-box mt20">
-							<div class="stream-list" th:each="blog : ${page.content}">
+							<div class="stream-list" th:each="blog : ${pages}">
 								<div class="stream-item" id="loop-18">
 									<div class="blog-rank">
 										<div class="votes #if(1 > 0) plus #end">
-											1<small>喜欢</small>
+											<span th:text="${blog.xihuan}"></span><small>喜欢</small>
 										</div>
 										<div class="views hidden-xs">
-											0<small>评论</small>
+											<span th:text="${blog.pinglun}"></span><small>评论</small>
 										</div>
 									</div>
 									<div class="summary">
-										<h2 class="title"><a href="/view/18" th:text="${blog.title}">XML 和 Json 的特点</a></h2>
+										<h2 class="title"><a th:href="@{/blog/{id}(id=${blog.id})}" th:text="${blog.title}">XML 和 Json 的特点</a></h2>
 
 										<div class="excerpt wordbreak hidden-xs" th:text="${blog.content}">Xml 特点：&nbsp; 1、有且仅有一个根节点； 2、是独立与软件和硬件的信息传输工具（传输量较大）&nbsp; 3、所有的标签都需要自定义&nbsp; 4、仅仅是纯文本文件 Json（JavaScript Object Notation）特... &nbsp;</div>
 
@@ -86,20 +86,19 @@
 
 										<div class="foot-block clearfix">
 											<div class="author">
-												<time>1小时前</time>
+												<span th:text="${#dates.format(blog.createTime,'yyyy-MM-dd hh:mm:ss')}"></span>
 											</div>
 											<ul class="tags">
 											</ul>
 											<div class="pull-right hidden-xs">
-												<span class="act">浏览 (<i>0</i>)</span>
-												<span class="act">喜欢 (<i>1</i>)</span>
+												<span class="act">浏览 (<i><span th:text="${blog.views}"></span></i>)</span>
+												<span class="act">喜欢 (<i><span th:text="${blog.xihuan}"></span></i>)</span>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
 						<div class="text-center clr">
 
 <ul class="pagination">
