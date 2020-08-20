@@ -27,6 +27,8 @@ public class User {
     private String salt;
     private String phone;
     private Integer type;
+    // 账号状态
+    private Boolean status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)

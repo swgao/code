@@ -52,6 +52,7 @@ public class LoginShowController {
         user.setCreateTime(new Date());
         user.setAvatar("");
         user.setType(1);
+        user.setStatus(true);
         user.setUpdateTime(new Date());
         userRepository.save(user);
         return Result.of(200,"注册成功");

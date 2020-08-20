@@ -52,9 +52,14 @@ public class LoginController {
             String newpassword = DigestHelper.getSha1(password+s);
             User user = userService.checkUser(username,newpassword);
             if (user!=null){
-                user.setPassword(null);
-                session.setAttribute("user",user);
-                return "redirect:/home/index";
+                if (user.getStatus()){
+                    //                user.setPassword(null);
+                    session.setAttribute("user",user);
+                    return "redirect:/home/index";
+                }else{
+                    attributes.addFlashAttribute("message","状态异常，请联系管理员");
+                    return "redirect:/admin";
+                }
             }else {
                 attributes.addFlashAttribute("message","密码错误");
                 return "redirect:/admin";
