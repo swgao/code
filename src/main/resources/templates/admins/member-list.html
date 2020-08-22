@@ -83,7 +83,7 @@
                                       <a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
                                         <i class="layui-icon">&#xe631;</i>
                                       </a>
-                                      <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                                      <a title="删除" onclick="member_del(this)"  th:attr="data-ff=${user.id}" href="javascript:;">
                                         <i class="layui-icon">&#xe640;</i>
                                       </a>
                                     </td>
@@ -149,7 +149,7 @@
                         if (data.code==200){
                             //发异步把用户状态进行更改
                             $(obj).attr('title','已停用')
-                            $(obj).find('i').html('');
+                            $(obj).find('i').html('&#xe62f;');
                             $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
                             layer.msg('已停用!',{icon: 5,time:1000});
                         }
@@ -178,11 +178,21 @@
       }
 
       /*用户-删除*/
-      function member_del(obj,id){
+      function member_del(obj){
+          var deleteid = $(obj).data('ff');
+          console.log(deleteid)
           layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+              $.ajax({
+                  url : "/deleteUser",
+                  data: {
+                      'id':deleteid
+                  },
+                  success: function (data) {
+                      //发异步删除数据
+                      $(obj).parents("tr").remove();
+                      layer.msg('已删除!',{icon:1,time:1000});
+                  }
+              })
           });
       }
 

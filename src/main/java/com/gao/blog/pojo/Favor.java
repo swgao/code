@@ -17,11 +17,9 @@ public class Favor {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private User user;
     @ManyToOne
     @JoinColumn(name = "blog_id")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Blog blog;
     private Date createTime;
     private boolean if_like;

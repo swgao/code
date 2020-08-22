@@ -191,27 +191,23 @@
                                 <thead>
                                     <tr>
                                         <th>序号</th>
-                                        <th>博客标题</th>
-                                        <th>博客作者</th>
-                                        <th>评论总数</th>
-                                        <th>喜欢总数</th>
-                                        <th>发表时间</th>
-                                        <th>更新时间</th>
+                                        <th>评论内容</th>
+                                        <th>评论博客名</th>
+                                        <th>评论用户</th>
+                                        <th>评论时间</th>
                                         <th>操作</th></tr>
                                 </thead>
-                                <tbody th:each="_,iterStat:${page.content}">
-                                    <tr th:each="blog:${pages}">
+                                <tbody>
+                                    <tr th:each="comment,iterStat:${comments.content}">
                                         <td th:text="${iterStat.count}"></td>
-                                        <td th:text="${blog.title}"></td>
-                                        <td th:text="${blog.user.username}"></td>
-                                        <td th:text="${blog.pinglun}"></td>
-                                        <td th:text="${blog.xihuan}"></td>
-                                        <td th:text="${#dates.format(blog.createTime,'yyyy-MM-dd HH:mm:ss')}">待确认</td>
-                                        <td th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm:ss')}">未支付</td>
+                                        <td th:text="${comment.content}"></td>
+                                        <td th:text="${comment.blog.title}"></td>
+                                        <td th:text="${comment.user_id.username}"></td>
+                                        <td th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
                                         <td class="td-manage">
-                                            <a title="查看" onclick="opens(this)" th:attr="data-tt=${blog.id}" href="javascript:;">
+                                            <a title="查看" onclick="xadmin.open('编辑','order-view.html')" href="javascript:;">
                                                 <i class="layui-icon">&#xe63c;</i></a>
-                                            <a title="删除" onclick="member_del(this)" th:attr="data-bb=${blog.id}" href="javascript:;">
+                                            <a title="删除" onclick="member_del(this)" th:attr="data-cc=${comment.id}" href="javascript:;">
                                                 <i class="layui-icon">&#xe640;</i></a>
                                         </td>
                                     </tr>
@@ -221,8 +217,8 @@
                         <div class="layui-card-body ">
                             <div class="page">
                                 <div>
-                                    <a href="#" class="ui teal mini basic button" th:href="@{/blogsList/(page=${page.number}-1)}" th:unless="${page.first}">上一页</a>
-                                    <a href="#" class="ui teal mini basic button" th:href="@{/blogsList/(page=${page.number}+1)}" th:unless="${page.last}">下一页</a>
+                                    <a href="#" class="ui teal mini basic button" th:href="@{/commentList/(page=${comments.number}-1)}" th:unless="${comments.first}">上一页</a>
+                                    <a href="#" class="ui teal mini basic button" th:href="@{/commentList/(page=${comments.number}+1)}" th:unless="${comments.last}">下一页</a>
                             </div>
                         </div>
                     </div>
@@ -244,11 +240,7 @@
                 elem: '#end' //指定元素
             });
         });
-        /*弹出查看博客详情的处理*/
-        function opens(obj) {
-            var id = $(obj).data('tt');
-            xadmin.open('编辑','/blog/'+id)
-        }
+
         /*用户-停用*/
         function member_stop(obj, id) {
             layer.confirm('确认要停用吗？',
@@ -282,21 +274,24 @@
 
         /*用户-删除*/
         function member_del(obj) {
-            var id = $(obj).data('bb');
+            var id = $(obj).data('cc');
+            console.log(id)
             layer.confirm('确认要删除吗？',
             function(index) {
                 $.ajax({
-                    url : "/blogs/delete",
+                    url : "/comment/delete",
                     data: {
                         'id':id
                     },
                     success: function (data) {
                         //发异步删除数据
-                        $(obj).parents("tr").remove();
-                        layer.msg('已删除!', {
-                            icon: 1,
-                            time: 1000
-                        });
+                        if(data.code==200){
+                            $(obj).parents("tr").remove();
+                            layer.msg('已删除!', {
+                                icon: 1,
+                                time: 1000
+                            });
+                        }
                     }
                 })
             });

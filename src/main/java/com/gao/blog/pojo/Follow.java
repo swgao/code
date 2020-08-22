@@ -18,11 +18,9 @@ public class Follow {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "source_id")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private User source; // 发起关注的人
     @ManyToOne
     @JoinColumn(name = "target_id")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private User target; // 被关注的人
     private Date createTime; // 关注时间
 }

@@ -28,11 +28,17 @@ public class User {
     private String phone;
     private Integer type;
     // 账号状态
-    private Boolean status;
+    private Boolean status;  //0-代表停用 1-代表正常
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
     private List<Blog> blogs = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.REMOVE,mappedBy = "user")
+    private List<Notify> notifies = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "target")
+    private List<Follow> follows = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "source")
+    private List<Follow> follows1 = new ArrayList<>();
 }

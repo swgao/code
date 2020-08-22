@@ -4,10 +4,12 @@ import com.gao.blog.dao.CommentRepository;
 import com.gao.blog.dao.FavorReponsitory;
 import com.gao.blog.dao.UserRepository;
 import com.gao.blog.pojo.Blog;
+import com.gao.blog.pojo.Comment;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.BlogService;
 import com.gao.blog.vo.BlogVO;
 import com.gao.blog.vo.Result;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,8 +64,8 @@ public class IndexsController {
      * @param pageable
      * @return
      */
-    @GetMapping("/commentList")
-    public String commentList(Model model, @PageableDefault(size = 10,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
+    @GetMapping("/blogsList")
+    public String blogsList(Model model, @PageableDefault(size = 10,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable){
         model.addAttribute("page",blogService.listBlog(pageable));
         // 拿到博客
         Page<Blog> blogs = blogService.listBlog(pageable);
@@ -78,7 +80,6 @@ public class IndexsController {
             BlogVO v = new BlogVO();
             // 把评论数f赋值
             v.setPinglun(count);
-            System.out.println(count);
             // 查询喜欢的个数
             int favorCount = favorReponsitory.countByBlog(a.getId());
             v.setXihuan(favorCount);
@@ -93,6 +94,24 @@ public class IndexsController {
     }
 
     /**
+     * 后台评论展示
+     * @param model
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/commentList")
+    public String commentList(Model model, @PageableDefault(size = 2,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable){
+        model.addAttribute("comments",commentRepository.findAll(pageable));
+        return "admins/comment-list";
+    }
+
+    @ResponseBody
+    @RequestMapping("/comment/delete")
+    public Result comment_delete(@RequestParam Long id){
+        commentRepository.deleteById(id);
+        return Result.of(200);
+    }
+    /**
      * 用户停用
      * @param id
      * @return
@@ -101,7 +120,6 @@ public class IndexsController {
     @ResponseBody
     @RequestMapping("/status")
     public Result status(@RequestParam long id){
-        System.out.println(id);
         User one = userRepository.getOne(id);
         one.setStatus(false);
         userRepository.save(one);
@@ -117,7 +135,6 @@ public class IndexsController {
     @ResponseBody
     @RequestMapping("/unstatus")
     public Result unstatus(@RequestParam long id){
-        System.out.println(id);
         User one = userRepository.getOne(id);
         one.setStatus(true);
         userRepository.save(one);
@@ -133,5 +150,17 @@ public class IndexsController {
     @GetMapping("/blogs/delete")
     public void delete(@RequestParam("id") Long id){
         blogService.deleteBlog(id);
+    }
+
+    /**
+     * 后台删除一个永辉
+     * @param id
+     */
+    @Transactional
+    @ResponseBody
+    @RequestMapping("/deleteUser")
+    public void deleteUser(@RequestParam Long id){
+        System.out.println(id);
+        userRepository.deleteById(id);
     }
 }

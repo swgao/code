@@ -34,4 +34,11 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     */
    @Query("select count(*) from Comment c where c.blog.id=?1")
    int countByBlogId(Long blogId);
+
+   /**
+    * 查询所有评论
+    * @param pageable
+    * @return
+    */
+   Page<Comment> findAll(Pageable pageable);
 }

@@ -39,9 +39,19 @@ public class Blog {
     private User user;
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy = "blog")
     private List<Comment> comments = new ArrayList<>();
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy = "blog")
+    private List<Favor> favors = new ArrayList<>();
 
     @Transient
     private String tagIds;
+
+    public List<Favor> getFavors() {
+        return favors;
+    }
+
+    public void setFavors(List<Favor> favors) {
+        this.favors = favors;
+    }
 
     public Long getId() {
         return id;
