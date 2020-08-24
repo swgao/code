@@ -94,8 +94,8 @@
                         <div class="layui-card-body ">
                             <div class="page">
                                 <div>
-                                    <a th:href="@{/list(page=${users.number}-1)}" th:unless="${users.first}" class="item">上一页</a>
-                                    <a th:href="@{/list(page=${users.number}+1)}" th:unless="${users.last}" class="item">下一页</a>
+                                    <a th:href="@{/admins/list(page=${users.number}-1)}" th:unless="${users.first}" class="item">上一页</a>
+                                    <a th:href="@{/admins/list(page=${users.number}+1)}" th:unless="${users.last}" class="item">下一页</a>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
 
               if($(obj).attr('title')=='停用'){
                 $.ajax({
-                    url : "/status",
+                    url : "/admins/status",
                     data: {
                         'id':id
                     },
@@ -158,7 +158,7 @@
 
               }else{
                   $.ajax({
-                      url : "/unstatus",
+                      url : "/admins/unstatus",
                       data: {
                           'id':id
                       },
@@ -183,7 +183,7 @@
           console.log(deleteid)
           layer.confirm('确认要删除吗？',function(index){
               $.ajax({
-                  url : "/deleteUser",
+                  url : "/admins/deleteUser",
                   data: {
                       'id':deleteid
                   },

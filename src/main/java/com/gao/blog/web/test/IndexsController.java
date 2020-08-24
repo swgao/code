@@ -2,11 +2,15 @@ package com.gao.blog.web.test;
 
 import com.gao.blog.dao.CommentRepository;
 import com.gao.blog.dao.FavorReponsitory;
+import com.gao.blog.dao.NotifyRepository;
 import com.gao.blog.dao.UserRepository;
 import com.gao.blog.pojo.Blog;
 import com.gao.blog.pojo.Comment;
+import com.gao.blog.pojo.Notify;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.BlogService;
+import com.gao.blog.service.TagService;
+import com.gao.blog.service.TypeService;
 import com.gao.blog.vo.BlogVO;
 import com.gao.blog.vo.Result;
 import com.sun.org.apache.regexp.internal.RE;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping("/admins")
 @Controller
 public class IndexsController {
 
@@ -35,6 +40,12 @@ public class IndexsController {
     CommentRepository commentRepository;
     @Autowired
     FavorReponsitory favorReponsitory;
+    @Autowired
+    NotifyRepository notifyRepository;
+    @Autowired
+    TypeService typeService;
+    @Autowired
+    TagService tagService;
 
     /**
      * 后台主页
@@ -105,11 +116,45 @@ public class IndexsController {
         return "admins/comment-list";
     }
 
+    /**
+     * 评论删除
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/comment/delete")
     public Result comment_delete(@RequestParam Long id){
         commentRepository.deleteById(id);
         return Result.of(200);
+    }
+
+    /**
+     * 类型列表展示
+     * @param model
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/typesList")
+    public String typesList(Model model, @PageableDefault(size = 2,direction = Sort.Direction.DESC) Pageable pageable){
+        model.addAttribute("page",typeService.listType(pageable));
+        return "admins/types-list";
+    }
+
+    /**
+     * 后台修改类型
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/types/{id}/input")
+    public String editInput(@PathVariable("id") Long id, Model model){
+        model.addAttribute("type",typeService.getType(id));
+        return "admin/types-input";
+    }
+    @GetMapping("/tagsList")
+    public String tags(@PageableDefault(size = 2,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        model.addAttribute("page", tagService.listTag(pageable));
+        return "admins/tags-list";
     }
     /**
      * 用户停用
@@ -153,7 +198,7 @@ public class IndexsController {
     }
 
     /**
-     * 后台删除一个永辉
+     * 后台删除一个用户
      * @param id
      */
     @Transactional
@@ -162,5 +207,8 @@ public class IndexsController {
     public void deleteUser(@RequestParam Long id){
         System.out.println(id);
         userRepository.deleteById(id);
+        // 删除和他关联的所有通知
+        notifyRepository.deleteUserId(id);
     }
+
 }

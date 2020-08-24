@@ -217,8 +217,8 @@
                         <div class="layui-card-body ">
                             <div class="page">
                                 <div>
-                                    <a href="#" class="ui teal mini basic button" th:href="@{/commentList/(page=${comments.number}-1)}" th:unless="${comments.first}">上一页</a>
-                                    <a href="#" class="ui teal mini basic button" th:href="@{/commentList/(page=${comments.number}+1)}" th:unless="${comments.last}">下一页</a>
+                                    <a href="#" class="ui teal mini basic button" th:href="@{/admins/commentList/(page=${comments.number}-1)}" th:unless="${comments.first}">上一页</a>
+                                    <a href="#" class="ui teal mini basic button" th:href="@{/admins/commentList/(page=${comments.number}+1)}" th:unless="${comments.last}">下一页</a>
                             </div>
                         </div>
                     </div>
@@ -279,7 +279,7 @@
             layer.confirm('确认要删除吗？',
             function(index) {
                 $.ajax({
-                    url : "/comment/delete",
+                    url : "/admins/comment/delete",
                     data: {
                         'id':id
                     },

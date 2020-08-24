@@ -34,4 +34,5 @@ public interface FavorReponsitory extends JpaRepository<Favor,Long> {
     @Query("from Favor f where f.user.id=?1 and f.if_like=true ")
     Page<Favor> findByBlog(long userId, Pageable page);
 
+
 }

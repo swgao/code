@@ -15,4 +15,12 @@ public interface NotifyRepository extends JpaRepository<Notify,Long> {
      */
     @Query("from Notify n where n.user.id=?1")
     Page<Notify> findByUser(Long userId, Pageable pageable);
+
+    /**
+     * 删除和这个要删除用户的所有有关通知
+     * @param id
+     * @return
+     */
+    @Query("delete from Notify n where n.user.id=?1")
+    int deleteUserId(Long id);
 }

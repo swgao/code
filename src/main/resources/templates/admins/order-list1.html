@@ -247,7 +247,7 @@
         /*弹出查看博客详情的处理*/
         function opens(obj) {
             var id = $(obj).data('tt');
-            xadmin.open('编辑','/blog/'+id)
+            xadmin.open('编辑','/admins/blog/'+id)
         }
         /*用户-停用*/
         function member_stop(obj, id) {
@@ -286,7 +286,7 @@
             layer.confirm('确认要删除吗？',
             function(index) {
                 $.ajax({
-                    url : "/blogs/delete",
+                    url : "/admins/blogs/delete",
                     data: {
                         'id':id
                     },
