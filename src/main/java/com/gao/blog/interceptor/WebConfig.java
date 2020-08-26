@@ -12,5 +12,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/admin")
                 .excludePathPatterns("/admin/login")
                 .addPathPatterns("/home/**");
+        registry.addInterceptor(new SysInterceptor())
+                .addPathPatterns("/admins/**")
+                .excludePathPatterns("/admins/login");
     }
+
 }

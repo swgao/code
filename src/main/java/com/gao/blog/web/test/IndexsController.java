@@ -11,6 +11,8 @@ import com.gao.blog.pojo.User;
 import com.gao.blog.service.BlogService;
 import com.gao.blog.service.TagService;
 import com.gao.blog.service.TypeService;
+import com.gao.blog.service.UserService;
+import com.gao.blog.util.DigestHelper;
 import com.gao.blog.vo.BlogVO;
 import com.gao.blog.vo.Result;
 import com.sun.org.apache.regexp.internal.RE;
@@ -24,7 +26,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,17 +50,73 @@ public class IndexsController {
     TypeService typeService;
     @Autowired
     TagService tagService;
+    @Autowired
+    UserService userService;
+
 
     /**
      * 后台主页
+     *
      * @param model
      * @return
      */
     @GetMapping("/indexs")
-    public String index(Model model){
+    public String index(Model model) {
         return "admins/index";
     }
 
+    /**
+     * 后台登录页面
+     * @return
+     */
+    @GetMapping({"/login", "", "/"})
+    public String login() {
+        return "admins/login";
+    }
+
+    /**
+     * 后台ajax异步登录
+     * @param username
+     * @param password
+     * @param session
+     * @param attributes
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/login")
+    public Result adminlogin(@RequestParam String username, @RequestParam String password, HttpSession session, RedirectAttributes attributes) {
+        User username1 = userRepository.findByUsername(username);
+        if (username1 != null) {
+            String s = username1.getSalt();
+            String newpassword = DigestHelper.getSha1(password + s);
+            User user = userService.checkUser(username, newpassword);
+            if (user != null) {
+                if (user.getStatus()) {
+                    if (user.getAuthority().equals("管理员")) {
+                        session.setAttribute("superUser", user);
+                        return Result.of(200);
+//                        return "redirect:/admins/indexs";
+                    } else {
+                        attributes.addFlashAttribute("message", "访问权限不足");
+                        return Result.of(300, "权限不足");
+//                        return "redirect:/admins/login";
+                    }
+                } else {
+                    attributes.addFlashAttribute("message", "状态异常，请联系管理员");
+                    return Result.of(500, "状态异常，请联系管理员");
+//                    return "redirect:/admin";
+                }
+            } else {
+                attributes.addFlashAttribute("message", "密码错误");
+                return Result.of(301, "密码错误");
+//                return "redirect:/admin";
+            }
+        } else {
+            attributes.addFlashAttribute("message", "用户名错误");
+            return Result.of(302, "用户名错误");
+//            return "redirect:/admin";
+        }
+    }
     /**
      * 后台用户列表展示
      * @param model

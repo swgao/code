@@ -26,5 +26,13 @@ public interface UserRepository extends JpaRepository<User,Long> {
      */
     Page<User> findAll(Pageable pageable);
 
+    /**
+     * 查询数据库中是否有这个用户
+     * @param id
+     * @return
+     */
+    @Query("select count(*) from User u where u.id = ?1")
+    int findUserNull(long id);
+
 
 }

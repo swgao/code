@@ -33,7 +33,8 @@ public class Blog {
     private Date updateTime;
     @ManyToOne
     private Type type;
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany()
+    @JoinTable
     private List<Tag> tags = new ArrayList<>();
     @ManyToOne
     private User user;

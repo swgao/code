@@ -1,5 +1,6 @@
 package com.gao.blog.web.admin;
 
+import com.gao.blog.pojo.Blog;
 import com.gao.blog.pojo.Tag;
 import com.gao.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 
 /**
@@ -25,6 +28,8 @@ import javax.validation.Valid;
 public class TagController {
     @Autowired
     private TagService tagService;
+    @Autowired
+    EntityManager entityManager;
 
     /**
      * 显示标签的页面
@@ -115,9 +120,15 @@ public class TagController {
         return "redirect:/admin/tags";
     }
 
+    @Transactional
     @GetMapping("/tags/{id}/delete")
     public String delete(@PathVariable("id") Long id){
-        tagService.deleteTag(id);
+        Tag tag = tagService.getTag(id);
+        entityManager.remove(tag);
+        for (Blog blog:tag.getBlogs()){
+            blog.getTags().remove(tag);
+        }
+//        tagService.deleteTag(id);
         return "redirect:/admin/tags";
     }
 }

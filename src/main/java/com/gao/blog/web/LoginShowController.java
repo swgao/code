@@ -53,7 +53,9 @@ public class LoginShowController {
         user.setAvatar("");
         user.setType(1);
         user.setStatus(true);
+        user.setAuthority("用户");
         user.setUpdateTime(new Date());
+        user.setAvatar("/images/logo.jpg");
         userRepository.save(user);
         return Result.of(200,"注册成功");
     }

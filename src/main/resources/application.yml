@@ -3,6 +3,10 @@ spring:
     mode: HTML
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
 
 comment.avatar: /images/logo.jpg
 STORE_ROOT_PATH: D:/data

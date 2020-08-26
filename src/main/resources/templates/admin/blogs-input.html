@@ -48,13 +48,14 @@
 <!--中间内容-->
 <div class="m-container m-padded-tb-larger">
     <div class="ui container">
-        <form id="blog-form" action="#" th:object="${blog}" th:action="${blog.getCreateTime()}!= null ? @{/admin/blogs/update}:@{/admin/blogs}" method="post" class="ui form">
+        <form id="blog-form" action="#" th:object="${blog}" th:action="${blog.getCreateTime()}!= null ? @{/admin/blogs/update}:@{/admin/blogs}" method="post" enctype="multipart/form-data" class="ui form">
             <input type="hidden" name="published">
             <input type="hidden" name="id" th:value="*{id}">
+            <input type="hidden" name="views" th:value="*{views}">
             <div class="required field">
                 <div class="ui left labeled input">
                     <div class="ui selection compact teal basic dropdown label">
-                        <input type="hidden" value="原创" name="flag" th:value="*{flag}">
+                        <input type="hidden" name="flag" data-value="原创" th:value="*{flag}==null?'原创':*{flag}">
                         <i class="dropdown icon"></i>
                         <div class="text">
                             原创
@@ -106,10 +107,15 @@
             <div class="required field">
                 <div class="ui left labeled input">
                     <label class="ui teal basic label">首图</label>
-                    <input type="text" name="firstPicture" th:value="*{firstPicture}" placeholder="首图引用地址">
+<!--                    <input type="text" name="firstPicture" placeholder="首图引用地址">-->
+                    <input type="file" name="file" accept="image/*"/>
+                </div>
+                <div class="ui left labeled input" th:if="*{firstPicture}">
+                    <label class="ui teal basic label">图片地址</label>
+                    <!--                    <input type="text" name="firstPicture" placeholder="首图引用地址">-->
+                    <input type="text" name="file1" readonly="readonly" th:value="*{firstPicture}" accept="image/*"/>
                 </div>
             </div>
-
             <div class="inline fields">
                 <div class="field">
                     <div class="ui checkbox">
@@ -202,12 +208,22 @@
 <!--<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
 <script th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script>
+    // function Img(obj) {
+    //     var img = obj.files;
+    //     console.log(img["file"])
+    //     $.ajax({
+    //         url : '/posts/upload',
+    //         data :{
+    //             'file':img
+    //         }
+    //     })
+    // }
     /*初始化markdown*/
     var contentEditor;
     $(function() {
         contentEditor = editormd("md-content", {
-            width   : "90%",
-            height  : 640,
+            width   : "100%",
+            height  : 740,
             syncScrolling : "single",
             previewCodeHighlight : true,
             htmlDecode : "style,script,iframe|on*",

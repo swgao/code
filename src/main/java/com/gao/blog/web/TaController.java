@@ -21,7 +21,6 @@ public class TaController {
     TaService taService;
     @Autowired
     UserRepository userRepository;
-    static long userID;
     /**
      * 他的主页跳转
      * @param userId
@@ -31,8 +30,13 @@ public class TaController {
      */
     @RequestMapping("/ta/{userId}")
     public String ta(@PathVariable("userId") long userId, @RequestParam(defaultValue = "1") Integer pn, Model model){
-        // user基本信息，user的文章分页
-        taService.findData(userId, pn,model);
-        return "ta/index";
+        int userNull = userRepository.findUserNull(userId);
+        if (userNull >= 1){
+            // user基本信息，user的文章分页
+            taService.findData(userId, pn,model);
+            return "ta/index";
+        }else {
+            return "redirect:/error/404";
+        }
     }
 }

@@ -75,7 +75,6 @@ public class UploadController {
         }
         return Result.of(2,"上传失败");
     }
-
     /**
      * 接收回传的图片
      * @param filename
