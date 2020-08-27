@@ -1,6 +1,7 @@
 package com.gao.blog.web.home;
 
 import com.gao.blog.dao.FavorReponsitory;
+import com.gao.blog.dao.NotifyRepository;
 import com.gao.blog.dao.UserRepository;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.*;
@@ -63,6 +64,7 @@ public class HomeController {
         // 我的粉丝
         model.addAttribute("fans",homeService.fans(pageable));
         // 通知
+        model.addAttribute("count", homeService.count());
         model.addAttribute("data",homeService.notifies(pageable));
         // 我的喜欢
         model.addAttribute("love",favorReponsitory.findByBlog(user.getId(),pageable));

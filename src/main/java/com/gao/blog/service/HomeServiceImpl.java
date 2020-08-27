@@ -63,4 +63,16 @@ public class HomeServiceImpl implements HomeService{
         User user = (User) session.getAttribute("user");
         return notifyRepository.findByUser(user.getId(),pageable);
     }
+
+    /**
+     * 用户通知未读数
+     * @return
+     */
+    @Override
+    public int count() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        return notifyRepository.findByCount(user.getId());
+    }
 }

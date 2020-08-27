@@ -23,4 +23,12 @@ public interface NotifyRepository extends JpaRepository<Notify,Long> {
      */
     @Query("delete from Notify n where n.user.id=?1")
     int deleteUserId(Long id);
+
+    /**
+     * 查询用户有多少条未读消息
+     * @param userId
+     * @return
+     */
+    @Query("select count(*) from Notify n where n.user.id=?1 and n.status=0")
+    int findByCount(Long userId);
 }

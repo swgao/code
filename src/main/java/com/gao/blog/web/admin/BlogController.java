@@ -45,7 +45,8 @@ public class BlogController {
 
     @Autowired
     TypeService typeService;
-
+@Autowired
+BlogRepository blogRepository;
     @Autowired
     TagService tagService;
 
@@ -108,7 +109,7 @@ public class BlogController {
     @GetMapping("/blogs/{id}/input")
     public String editInput(@PathVariable("id")Long id, Model model){
         setTypeAndTag(model);
-        Blog blog = blogService.getBlog(id);
+        Blog blog = blogRepository.getOne(id);
         blog.init();
         model.addAttribute("blog",blogService.getBlog(id));
         return INPUT;

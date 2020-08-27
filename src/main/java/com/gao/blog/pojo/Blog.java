@@ -1,9 +1,6 @@
 package com.gao.blog.pojo;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,8 +30,7 @@ public class Blog {
     private Date updateTime;
     @ManyToOne
     private Type type;
-    @ManyToMany()
-    @JoinTable
+    @ManyToMany(cascade = {CascadeType.REFRESH})
     private List<Tag> tags = new ArrayList<>();
     @ManyToOne
     private User user;

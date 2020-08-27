@@ -101,6 +101,7 @@ public class TagServiceImpl implements TagService{
      */
     @Override
     public List<Tag> listTag(String ids) {
+        convertToList(ids);
         return tagRepository.findAllById(convertToList(ids));
     }
 

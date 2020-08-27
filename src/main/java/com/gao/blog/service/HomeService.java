@@ -27,4 +27,10 @@ public interface HomeService {
      */
     Page<Notify> notifies(Pageable pageable);
 
+    /**
+     * 用户通知未读数
+     * @return
+     */
+    int count();
+
 }

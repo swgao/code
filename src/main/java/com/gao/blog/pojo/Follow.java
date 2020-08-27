@@ -9,7 +9,6 @@ import java.util.Date;
 /**
  * 关注实体类
  */
-@Data
 @Entity
 @Table(name = "blog_follows")
 public class Follow {
@@ -23,4 +22,36 @@ public class Follow {
     @JoinColumn(name = "target_id")
     private User target; // 被关注的人
     private Date createTime; // 关注时间
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getSource() {
+        return source;
+    }
+
+    public void setSource(User source) {
+        this.source = source;
+    }
+
+    public User getTarget() {
+        return target;
+    }
+
+    public void setTarget(User target) {
+        this.target = target;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }

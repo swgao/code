@@ -3,6 +3,24 @@
 <head th:replace="_fragments::head(~{::title})">
     <meta charset="UTF-8">
     <title>标签</title>
+    <style>
+        #p2{
+            width: 434px;
+            height: 95px;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+            overflow: hidden;
+            margin-bottom: 5px;
+            text-indent: 2em;
+            /*-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他的WebKit属性。常见结合属性：
+            display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
+            -webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。*/
+        }
+
+    </style>
 </head>
 <body>
 <!--导航-->
@@ -38,7 +56,7 @@
                     <!--文章-->
                     <div class="eleven wide column">
                         <h3 class="ui header"><a href="" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}" th:text="${blog.title}" class="m-block">你真的理解什么事财富吗?</a></h3>
-                        <p class="m-text">dlfjklsadkfjsldkfjsafkjsldkfjdlsdjfjodlfjklsadkfjsldkfjsafkjsldkfjdlsdjfjoaweijflsadkjflsdkjflaskdjfdlfjklsadkfjsldkfjsafkjsldkfjdlsdjfjoaweijflsadkjflsdkjflaskdjfaweijflsadkjflsdkjflaskdjf</p>
+                        <div id="p2" th:text="${blog.content}"></div>
                         <div class="ui stackable grid">
                             <div class="eleven wide column">
                                 <div class="ui mini horizontal link list">

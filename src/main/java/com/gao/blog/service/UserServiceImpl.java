@@ -1,9 +1,6 @@
 package com.gao.blog.service;
 
-import com.gao.blog.dao.FavorReponsitory;
-import com.gao.blog.dao.FollowsRepository;
-import com.gao.blog.dao.NotifyRepository;
-import com.gao.blog.dao.UserRepository;
+import com.gao.blog.dao.*;
 import com.gao.blog.pojo.*;
 import com.gao.blog.util.DigestHelper;
 import com.gao.blog.vo.Result;
@@ -28,6 +25,8 @@ public class UserServiceImpl implements UserService{
     private FollowsRepository followsRepository;
     @Autowired
     private NotifyRepository notifyRepository;
+    @Autowired
+    private BlogRepository blogRepository;
 
     /**
      * 用户检查业务实现
@@ -126,6 +125,18 @@ public class UserServiceImpl implements UserService{
             favor.setUser(user1);
             favor.setIf_like(true);
             favorReponsitory.save(favor);
+            // 给被关注作者发通知
+            Notify notify = new Notify();
+            notify.setAvatar(user.getAvatar());
+            notify.setCreateTime(new Date());
+            notify.setTitle(user.getNickname());
+            Blog one = blogRepository.getOne(blogId);
+            User one1 = userRepository.getOne(one.getUser().getId());
+            notify.setUser(one1);
+            notify.setUrl("/ta/"+user.getId());
+            String s2 = String.format("喜欢了你的文章- <a href=\"/blog/%s\">点击查看详情</a>",blogId);
+            notify.setContent(s2);
+            notifyRepository.save(notify);
         }
         return null;
     }

@@ -123,12 +123,12 @@ public class TagController {
     @Transactional
     @GetMapping("/tags/{id}/delete")
     public String delete(@PathVariable("id") Long id){
-        Tag tag = tagService.getTag(id);
-        entityManager.remove(tag);
-        for (Blog blog:tag.getBlogs()){
-            blog.getTags().remove(tag);
-        }
-//        tagService.deleteTag(id);
+//        Tag tag = tagService.getTag(id);
+//        entityManager.remove(tag);
+//        for (Blog blog:tag.getBlogs()){
+//            blog.getTags().remove(tag);
+//        }
+        tagService.deleteTag(id);
         return "redirect:/admin/tags";
     }
 }
