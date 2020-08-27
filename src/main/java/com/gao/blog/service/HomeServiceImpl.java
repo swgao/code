@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 public class HomeServiceImpl implements HomeService{
@@ -74,5 +75,17 @@ public class HomeServiceImpl implements HomeService{
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         return notifyRepository.findByCount(user.getId());
+    }
+
+    /**
+     * 处理当前用户的全部未读消息
+     * @return
+     */
+    @Override
+    public List<Notify> unNotify() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        return notifyRepository.find(user.getId());
     }
 }

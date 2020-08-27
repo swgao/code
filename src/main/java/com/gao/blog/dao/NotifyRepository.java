@@ -6,6 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface NotifyRepository extends JpaRepository<Notify,Long> {
     /**
      * 查询当前用户有多少条通知
@@ -31,4 +34,12 @@ public interface NotifyRepository extends JpaRepository<Notify,Long> {
      */
     @Query("select count(*) from Notify n where n.user.id=?1 and n.status=0")
     int findByCount(Long userId);
+
+    /**
+     * 查询当前用户的全部未读消息
+     * @param userId
+     * @return
+     */
+    @Query("from Notify n where n.user.id=?1 and n.status=0")
+    List<Notify> find(Long userId);
 }

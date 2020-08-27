@@ -6,6 +6,8 @@ import com.gao.blog.pojo.Notify;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface HomeService {
 
     /**
@@ -32,5 +34,11 @@ public interface HomeService {
      * @return
      */
     int count();
+
+    /**
+     * 处理当前用户的全部未读消息
+     * @return
+     */
+    List<Notify> unNotify();
 
 }

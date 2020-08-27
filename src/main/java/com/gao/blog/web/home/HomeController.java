@@ -3,9 +3,11 @@ package com.gao.blog.web.home;
 import com.gao.blog.dao.FavorReponsitory;
 import com.gao.blog.dao.NotifyRepository;
 import com.gao.blog.dao.UserRepository;
+import com.gao.blog.pojo.Notify;
 import com.gao.blog.pojo.User;
 import com.gao.blog.service.*;
 
+import com.gao.blog.vo.Result;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +24,9 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -42,6 +46,8 @@ public class HomeController {
     UserRepository userRepository;
     @Autowired
     HomeService homeService;
+    @Autowired
+    NotifyRepository notifyRepository;
     @Value("${STORE_ROOT_PATH}")
     String StoreRootPath; // 寻存储根目录
 
@@ -219,5 +225,20 @@ public class HomeController {
     public String like(@PathVariable Long id,HttpSession session){
         userService.saveFavor(id,session);
         return "redirect:/blog/"+id;
+    }
+
+    /**
+     * 用户点击通知后，清除他的未读
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/unNotice")
+    public Result unNotice(){
+        List<Notify> all = homeService.unNotify();
+        for (Notify notify : all) {
+            notify.setStatus(1);
+            notifyRepository.save(notify);
+        }
+        return Result.of(200);
     }
 }

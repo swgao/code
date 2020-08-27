@@ -58,7 +58,7 @@
                 <a class="teal item" data-tab="four">我的喜欢 </a>
                 <a class="teal item" data-tab="five">我的关注 </a>
                 <a class="teal item" data-tab="six">我的粉丝 </a>
-                <a class="bell outline icon teal item" data-tab="seven">通知 <div class="ui teal left pointing label"><span th:text="${count}"></span></div></a>
+                <a class="bell outline icon teal item" id="notice" onclick="r()" data-tab="seven">通知 <div class="ui teal left pointing label"><span th:text="${count}"></span></div></a>
             </div>
         </div>
         <div class="twelve wide  tab column segment">
@@ -311,12 +311,19 @@
             });
         });
     })
-
+    function r(){
+        $.ajax({
+            url:"/home/unNotice",
+            success:function (data) {
+            }
+        })
+    }
 
     function follow(obj) {
         $("[name='page']").val($(obj).data('page'));
         loaddata()
     }
+
     function loaddata() {
         $("#test").load(/*[[@{/home/follows}]]*/"/home/follows",{
             page: $("[name='page']").val()
