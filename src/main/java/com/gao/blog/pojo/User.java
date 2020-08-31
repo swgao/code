@@ -26,7 +26,7 @@ public class User {
     private String avatar;
     private String salt;
     private String phone;
-    private Integer type;
+//    private Integer type;
     private String authority;
     // 账号状态
     private Boolean status;  //0-代表停用 1-代表正常

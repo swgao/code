@@ -115,6 +115,7 @@
             </div>
             <div class="ui attached tab segment" data-tab="third">Third </div>
             <div class="ui attached tab segment" data-tab="four">
+                <div th:text="${love.totalElements==0}?'你还没有喜欢任何文章哦！'"></div>
                 <div class="ui relaxed list">
                     <div class="item" th:each="xi:${love}">
                         <img class="ui image avatar"th:src="${xi.blog.getFirstPicture()}">
@@ -126,6 +127,7 @@
                 </div>
             </div>
             <div class="ui attached tab segment" data-tab="five">
+                <div th:text="${follows.totalElements==0}?'你还没有关注任何博主哦！'"></div>
                 <div id="test">
                     <div class="ui special cards" th:fragment="followsList">
                         <div class="card" th:id="'loop-'+${follow.target.id}" th:each="follow:${follows.content}" style="width: 150px;height: 281px">
@@ -181,6 +183,7 @@
                 </div>
             </div>
             <div class="ui attached tab segment" data-tab="six">
+                <div th:text="${fans.totalElements==0}?'还没有任何人关注你哦，快点去发点文章吧！'"></div>
                 <div id="fan_test">
                     <div th:fragment="fansList" class="ui special cards">
                         <div class="card" th:id="'loop-'+${fan.source.id}" th:each="fan:${fans.content}" style="width: 150px;height: 281px">
@@ -261,7 +264,7 @@
         </div>
     </div>
 </div>
-
+<div th:replace="_fragments::footer"></div>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <script type="text/javascript" th:src="@{/lib/layer/layer.js}"></script>
@@ -311,6 +314,16 @@
             });
         });
     })
+    /**
+     * 底下最新博客
+     */
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+    $(".ui.dropdown").dropdown({
+        on: "hover"
+    });
+    /**
+     * 用户点击通知发送到ajax
+     */
     function r(){
         $.ajax({
             url:"/home/unNotice",

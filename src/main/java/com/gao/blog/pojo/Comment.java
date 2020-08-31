@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "t_comment")
-public class Comment {
+public class   Comment {
     @Id
     @GeneratedValue
     private Long id;

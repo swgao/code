@@ -47,11 +47,9 @@ public class LoginShowController {
         String s = user.getSalt();
         String newpassword = DigestHelper.getSha1(m+s);
         user.setPassword(newpassword);
-
-        DigestHelper.getSha1("123456");
+//        DigestHelper.getSha1("123456");
         user.setCreateTime(new Date());
-        user.setAvatar("");
-        user.setType(1);
+//        user.setType(1);
         user.setStatus(true);
         user.setAuthority("用户");
         user.setUpdateTime(new Date());
