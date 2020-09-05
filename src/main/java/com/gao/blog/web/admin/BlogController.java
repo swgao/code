@@ -154,7 +154,7 @@ BlogRepository blogRepository;
         }else {
             attributes.addFlashAttribute("message","操作成功");
         }
-        return REDIRECT_LIST;
+        return "redirect:/home/index";
     }
 
     /**

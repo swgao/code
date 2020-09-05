@@ -6,9 +6,13 @@ import com.gao.blog.util.DigestHelper;
 import com.gao.blog.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -26,20 +30,29 @@ public class LoginShowController {
     }
 
     @RequestMapping("/register")
-    @ResponseBody
-    public Map<String, Object> register(@RequestBody(required = true)User user) throws InterruptedException {
+    public String register(User user, RedirectAttributes attributes, HttpServletRequest request, HttpSession session) throws InterruptedException {
         Thread.sleep(3000);
         User username = userRepository.findByUsername(user.getUsername());
         User email = userRepository.findByEmail(user.getEmail());
         User phone = userRepository.findByPhone(user.getPhone());
+        String verifyCode = request.getParameter("verifyCode");
         if (username != null){
-            return Result.of(300,"用户名存在");
+            attributes.addFlashAttribute("message","用户名已经存在");
+            return "redirect:/re";
         }
         if (email != null){
-            return Result.of(301,"邮箱已经存在");
+            attributes.addFlashAttribute("message","邮箱已经存在");
+            return "redirect:/re";
+//            return Result.of(301,"邮箱已经存在");
         }
         if (phone != null){
-            return Result.of(302,"手机号已经存在");
+            attributes.addFlashAttribute("message","手机号已经存在");
+            return "redirect:/re";
+//            return Result.of(302,"手机号已经存在");
+        }
+        if (!verifyCode.equals(session.getAttribute("verifyCode"))){
+            attributes.addFlashAttribute("message","验证码不正确");
+            return "redirect:/re";
         }
 //        DigestUtils.md5DigestAsHex();
         user.setSalt(UUID.randomUUID().toString());
@@ -55,7 +68,8 @@ public class LoginShowController {
         user.setUpdateTime(new Date());
         user.setAvatar("/images/logo.jpg");
         userRepository.save(user);
-        return Result.of(200,"注册成功");
+        return "admin/login";
+//        return Result.of(200,"注册成功");
     }
 
 }

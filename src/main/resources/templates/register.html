@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script th:src="@{/lib/layui/layui.js}" src="./lib/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="../../static/css/me.css">
     <title>博客管理注册</title>
 </head>
@@ -23,13 +24,13 @@
                         前台注册
                     </div>
                 </h2>
-                <form class="ui large form" method="post" onsubmit="return false;">
+                <form style="width: 450px;margin:0px auto;" class="ui large form" method="post" th:action="@{/register}">
                     <input type="hidden" name="id">
                     <div class="ui segment">
                         <div class="field">
                             <div class="ui left icon input">
                                 <i class="user icon"></i>
-                                <input type="text" id="username" name="username" placeholder="用户名">
+                                <input type="text" id="username" lay-verify="required" name="username" placeholder="用户名">
                             </div>
                         </div>
                         <div class="field">
@@ -56,21 +57,43 @@
                                 <input type="password" name="password" id="password" placeholder="密码">
                             </div>
                         </div>
-                        <button type="button" id="cc" class="ui fluid large teal button">注 册</button>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password2" id="password2" placeholder="确定密码">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="text" name="verifyCode" placeholder="验证码">
+                                <img class="verifyCode" onclick="changeCode()" src="getVerifyCode">
+                            </div>
+                        </div>
+                        <button id="cc" class="ui fluid large teal button">注 册</button>
                     </div>
 
                     <div class="ui error mini message"></div>
+                    <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:utext="${message}"></div>
                 </form>
             </div>
         </div>
-
     </div>
 </div>
+<br><br><br><br><br>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <script th:src="@{/lib/layer/layer.js}"></script>
-<script>
-    $('.ui.form').form({
+<script th:inline="javascript">
+    /*点击刷新验证码*/
+    function changeCode() {
+
+        var src = " getVerifyCode?" + new Date().getTime(); //加时间戳，防止浏览器利用缓存
+
+        $('.verifyCode').attr("src", src);                  //jQuery写法
+    }
+
+        $('.ui.form').form({
         fields : {
             username: {
                 identifier: 'username',
@@ -88,27 +111,59 @@
             },
             email: {
                 identifier: 'email',
-                rules: [{
+                rules: [
+                    {
                     type: 'empty',
-                    prompt: '请输入邮箱'
+                    prompt: "邮箱不能为空"
+                    },
+                    {
+                    type: 'email',
+                    optional: true,
+                    prompt: '请输入正确的邮箱'
                 }]
             },
             phone: {
                 identifier: 'phone',
+                rules: [
+                    {
+                        type: 'number',
+                        prompt: "手机号码只允许数字"
+                    },{
+                    type: 'exactLength[11]',
+                    prompt: '手机号码长度不正确'
+                }]
+            },
+            verifyCode: {
+                identifier: 'verifyCode',
                 rules: [{
                     type: 'empty',
-                    prompt: '请输入手机号'
+                    prompt: '请输入验证码'
                 }]
             },
             password: {
                 identifier: 'password',
-                rules: [{
-                    type: 'empty',
-                    prompt: '请输入密码'
+                rules: [
+                    {
+                        type   : 'empty',
+                        prompt : '请输入密码'
+                    },
+                    {
+                    type: 'minLength[8]',
+                    prompt: '请至少输入8位密码'
                 }]
+            },
+            password2:{
+                identifier  : 'password2',
+                rules: [
+                    {
+                        type   : 'match[password]', //match[name属性值]
+                        prompt : '两次的密码必须一致'
+                    }
+                ]
             }
         }
     });
+
     $(".ui.dropdown").dropdown({
         on: "hover"
     });
@@ -116,54 +171,53 @@
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide');
     });
-    $("#cc").click(function () {
-        var layer1 = layer.msg("正在处理....",{
-            icon: 16,
-            shade: 0.05,
-            time:0
-        });
-        var params={
-            username: $("#username").val(),
-            nickname: $("#nickname").val(),
-            email: $("#email").val(),
-            password: $("#password").val(),
-            phone: $("#phone").val(),
-        };
-        $.ajax({
-            type: "POST",
-            url: '/register',
-            dataType: "JSON",
-            contentType:"application/json;charset=utf-8",
-            data: JSON.stringify(params),
-            success: function (data) {
-                if (data.code == 300){
-                    layer.msg("用户名被占用了",function () {
-                    });
-                }
-                if (data.code == 301){
-                    layer.msg("邮箱已经存在",function () {
-                    });
-                }
-                if (data.code == 302){
-                    layer.msg("手机号已经存在",function () {
-                    });
-                }
-                if (data.code==200){
-                    layer.msg("恭喜注册成功",{icon: 6});
-                    setTimeout(function () {
-                        window.location.href = '/'
-                    },2000);
-                }
-                layer.close(layer1);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                layer.close(layer1);
-                layer.msg("服务器通讯错误",function () {
-                });
-            }
-        });
-    });
-
+    // $("#cc").click(function () {
+    //     var layer1 = layer.msg("正在处理....",{
+    //         icon: 16,
+    //         shade: 0.05,
+    //         time:0
+    //     });
+    //     var params={
+    //         username: $("#username").val(),
+    //         nickname: $("#nickname").val(),
+    //         email: $("#email").val(),
+    //         password: $("#password").val(),
+    //         phone: $("#phone").val(),
+    //     };
+    //     $.ajax({
+    //         type: "POST",
+    //         url: '/register',
+    //         dataType: "JSON",
+    //         contentType:"application/json;charset=utf-8",
+    //         data: JSON.stringify(params),
+    //         success: function (data) {
+    //             if (data.code == 300){
+    //                 layer.msg("用户名被占用了",function () {
+    //                 });
+    //             }
+    //             if (data.code == 301){
+    //                 layer.msg("邮箱已经存在",function () {
+    //                 });
+    //             }
+    //             if (data.code == 302){
+    //                 layer.msg("手机号已经存在",function () {
+    //                 });
+    //             }
+    //             if (data.code==200){
+    //                 layer.msg("恭喜注册成功",{icon: 6});
+    //                 setTimeout(function () {
+    //                     window.location.href = '/'
+    //                 },2000);
+    //             }
+    //             layer.close(layer1);
+    //         },
+    //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //             layer.close(layer1);
+    //             layer.msg("服务器通讯错误",function () {
+    //             });
+    //         }
+    //     });
+    // });
 </script>
 </body>
 </html>

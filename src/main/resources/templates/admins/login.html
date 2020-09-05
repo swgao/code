@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="stylesheet" th:href="@{/css/font.css}" href="./css/font.css">
     <link rel="stylesheet" th:href="@{/css/xadmin.css}" href="./css/xadmin.css">
-    <link rel="stylesheet" th:href="@{/css/logins.css}" href="./css/login.css">
+    <link rel="stylesheet" th:href="@{/X-admin/css/login.css}" href="./css/login.css">
     <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
     <script th:src="@{/lib/layui/layui.js}" src="./lib/layui/layui.js" charset="utf-8"></script>
     <script th:src="@{/js/xadmin.js}" type="text/javascript" src="./js/xadmin.js"></script>
@@ -19,60 +19,82 @@
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="login-bg">
-    
-    <div class="login layui-anim layui-anim-up">
-        <div class="message">gsw个人博客-管理登录</div>
-        <div id="darkbannerwrap"></div>
-        <form method="post" class="layui-form" >
-            <input name="username" id="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
-            <hr class="hr15">
-            <input name="password" id="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
-            <hr class="hr15">
-            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-            <hr class="hr20" >
-        </form>
-    </div>
 
-    <script>
-        $(function  () {
-            layui.use('form', function(){
-              var form = layui.form;
-              // layer.msg('玩命卖萌中', function(){
-              //   //关闭后的操作
-              //   });
-              //监听提交
-              form.on('submit(login)', function(){
-                  $.ajax({
-                      type: 'post',
-                      url : '/admins/login',
-                      data : {
-                          "username": $('#username').val(),
-                          "password": $('#password').val()
-                      },
-                      success : function (data) {
-                        if(data.code==200){
-                            window.location = "/admins/indexs";
-                        }
-                        if (data.code==300){
-                            layer.msg(data.msg,function () {});
-                        }
-                        if (data.code==301){
-                            layer.msg(data.msg,function () {});
-                        }
-                        if (data.code==302){
-                            layer.msg(data.msg,function () {});
-                        }
-                        if (data.code==500){
-                            layer.msg(data.msg,function () {});
-                        }
-                      }
-                  })
-                return false;
-              });
-            });
-        })
-    </script>
-    <!-- 底部结束 -->
+
+<body onkeydown="enterSubmit(event)" class="login-bg">
+
+<div class="login layui-anim layui-anim-up">
+    <div class="message">blog-管理登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <div class="layui-form">
+        <input name="username" id="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+        <hr class="hr15">
+        <input name="password" id="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
+        <hr class="hr15">
+        <div id="slider"></div>
+        <hr class="hr15">
+        <input id="login" value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <hr class="hr20">
+    </div>
+</div>
+<script>
+
+    function enterSubmit(obj) {
+        //当enter 键按下后，需要执行的事件
+        var button = document.getElementById('login');
+        if (obj.keyCode == 13) {
+            button.click();
+        }
+    }
+
+    layui.config({
+        base: '/X-admin/js/'
+    }).use(['sliderVerify', 'form', 'layer'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            sliderVerify = layui.sliderVerify,
+            $ = layui.jquery;
+
+        var slider = sliderVerify.render({
+            elem: '#slider',
+            onOk: function () {//当验证通过回调
+                layer.msg("滑块验证通过");
+            }
+        });
+
+        //监听提交
+        form.on('submit(login)', function(){
+            $.ajax({
+                type: 'post',
+                url : '/admins/login',
+                data : {
+                    "username": $('#username').val(),
+                    "password": $('#password').val()
+                },
+                success : function (data) {
+                    if(data.code==200){
+                        window.location = "/admins/indexs";
+                    }
+                    if (data.code==300){
+                        layer.msg(data.msg,function () {});
+                    }
+                    if (data.code==301){
+                        layer.msg(data.msg,function () {});
+                    }
+                    if (data.code==302){
+                        layer.msg(data.msg,function () {});
+                    }
+                    if (data.code==500){
+                        layer.msg(data.msg,function () {});
+                    }
+                }
+            })
+            return false;
+        });
+    });
+
+</script>
+<!-- 底部结束 -->
 </body>
 </html>

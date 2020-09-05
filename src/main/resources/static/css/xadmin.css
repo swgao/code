@@ -11,7 +11,7 @@ a{
 html{
     width: 100%;
     height: 100%;
-    overflow-x:hidden; 
+    overflow-x:hidden;
     overflow-y:auto;
 }
 body{
@@ -211,11 +211,11 @@ body{
     /*background: #fff ;*/
 }
 .left-nav #nav li .opened .current{
-    
+
 }
 .left-nav #nav li .sub-menu li:hover{
     /*color: blue;*/
-     /*background: #fff ;*/
+    /*background: #fff ;*/
 }
 .left-nav #nav li .sub-menu li a{
     padding: 12px 15px 12px 30px;
@@ -318,7 +318,7 @@ body{
 .page-content .layui-tab-content .layui-tab-item{
     width: 100%;
     height: 100%;
-    
+
 }
 .page-content .layui-tab-content .layui-tab-item iframe{
     width: 100%;
@@ -434,8 +434,8 @@ table th, table td {
         left: 60px;
     }
     .page-content .layui-tab-content .layui-tab-item{
-        -webkit-overflow-scrolling: touch; 
-        overflow-y: scroll; 
+        -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
     }
     .x-so input.layui-input{
         width: 100%;
@@ -491,7 +491,7 @@ table th, table td {
     font-size: 12px;
 }
 .x-admin-sm  .layui-breadcrumb>*{
-   font-size: 12px; 
+    font-size: 12px;
 }
 .x-admin-sm  .layui-btn,.x-admin-sm .layui-btn-xs,.x-admin-sm .layui-btn-sm{
     font-size: 12px;
@@ -531,4 +531,3 @@ table th, table td {
     font-size: 300px;
     color: #393D49;
 }
-

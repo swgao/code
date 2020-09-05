@@ -62,24 +62,24 @@ public class TagController {
      * @param attributes
      * @return
      */
-    @PostMapping("/tags")
-    public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
-
-        Tag tag1 = tagService.getTagByName(tag.getName());
-        if (tag1 != null){
-            result.rejectValue("name","nameError","不能添加重复标签");
-        }
-        if (result.hasErrors()){
-            return "admin/tags-input";
-        }
-        Tag t = tagService.saveTag(tag);
-        if (t == null){
-            attributes.addFlashAttribute("message","新增失败");
-        }else {
-            attributes.addFlashAttribute("message","新增成功");
-        }
-        return "redirect:/admin/tags";
-    }
+//    @PostMapping("/tags")
+//    public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
+//
+//        Tag tag1 = tagService.getTagByName(tag.getName());
+//        if (tag1 != null){
+//            result.rejectValue("name","nameError","不能添加重复标签");
+//        }
+//        if (result.hasErrors()){
+//            return "admin/tags-input";
+//        }
+//        Tag t = tagService.saveTag(tag);
+//        if (t == null){
+//            attributes.addFlashAttribute("message","新增失败");
+//        }else {
+//            attributes.addFlashAttribute("message","新增成功");
+//        }
+//        return "redirect:/admin/tags";
+//    }
 
     /**
      * 修改标签
@@ -87,11 +87,11 @@ public class TagController {
      * @param model
      * @return
      */
-    @GetMapping("/tags/{id}/input")
-    public String editInput(@PathVariable("id") Long id, Model model){
-        model.addAttribute("tag",tagService.getTag(id));
-        return "admin/tags-input";
-    }
+//    @GetMapping("/tags/{id}/input")
+//    public String editInput(@PathVariable("id") Long id, Model model){
+//        model.addAttribute("tag",tagService.getTag(id));
+//        return "admin/tags-input";
+//    }
 
     /**
      *
@@ -101,24 +101,24 @@ public class TagController {
      * @param attributes
      * @return
      */
-    @PostMapping("/tags/{id}")
-    public String editPost(@Valid Tag tag, BindingResult result,@PathVariable("id") Long id, RedirectAttributes attributes){
-
-        Tag tag1 = tagService.getTagByName(tag.getName());
-        if (tag1 != null){
-            result.rejectValue("name","nameError","不能添加重复分类");
-        }
-        if (result.hasErrors()){
-            return "admin/tags-input";
-        }
-        Tag t = tagService.updateTag(id,tag);
-        if (t == null){
-            attributes.addFlashAttribute("message","更新失败");
-        }else {
-            attributes.addFlashAttribute("message","更新成功");
-        }
-        return "redirect:/admin/tags";
-    }
+//    @PostMapping("/tags/{id}")
+//    public String editPost(@Valid Tag tag, BindingResult result,@PathVariable("id") Long id, RedirectAttributes attributes){
+//
+//        Tag tag1 = tagService.getTagByName(tag.getName());
+//        if (tag1 != null){
+//            result.rejectValue("name","nameError","不能添加重复分类");
+//        }
+//        if (result.hasErrors()){
+//            return "admin/tags-input";
+//        }
+//        Tag t = tagService.updateTag(id,tag);
+//        if (t == null){
+//            attributes.addFlashAttribute("message","更新失败");
+//        }else {
+//            attributes.addFlashAttribute("message","更新成功");
+//        }
+//        return "redirect:/admin/tags";
+//    }
 
     @Transactional
     @GetMapping("/tags/{id}/delete")
